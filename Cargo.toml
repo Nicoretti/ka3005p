@@ -1,0 +1,16 @@
+[package]
+name = "ka3000"
+version = "0.1.0"
+authors = ["Nicola Coretti <nico.coretti@gmail.com>"]
+edition = "2018"
+autobins = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serialport = "3.3.0"
+structopt = "0.3.15"
+
+[[bin]]
+name = "ka3000"
+path = "src/bin/ka3000.rs"
