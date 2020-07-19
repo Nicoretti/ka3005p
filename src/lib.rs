@@ -158,24 +158,23 @@ pub fn find_serial_port() -> Result<Box<dyn serialport::SerialPort>, String> {
     }
 }
 
-pub fn run_command(serial: &mut Box<dyn serialport::SerialPort>, command: &str) -> String {
+pub fn run_command(serial: &mut Box<dyn serialport::SerialPort>, command: &str) -> Vec<u8> {
     serial.write(command.as_bytes()).unwrap();
     serial.flush().unwrap();
-    let mut result: String = String::from("");
+    let mut result: Vec<u8> = Vec::new();
     loop {
         let mut serial_buf: Vec<u8> = vec![0; 1000];
         let r = serial.read(serial_buf.as_mut_slice());
         match r {
-            Ok(t) => {
-                result.push_str(&str::from_utf8(&serial_buf.as_slice()[..t]).unwrap());
-            }
+            Ok(t) => result.extend(serial_buf.drain(..t)),
             Err(ref e) if e.kind() == io::ErrorKind::TimedOut => {
                 break;
             }
             Err(e) => eprintln!("Error {:?}", e),
         }
     }
-
+    // TODO: Remove dgb statement and replace with logging
+    eprintln!("{:?}", result);
     return result;
 }
 
