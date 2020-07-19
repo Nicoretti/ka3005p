@@ -1,25 +1,28 @@
 use std::fmt;
+use std::io;
+use std::str;
+use std::time;
 
 #[derive(Debug, PartialEq)]
-struct Current {
+pub struct Current {
     a: u32,
     ma: u32,
 }
 
 #[derive(Debug, PartialEq)]
-struct Voltage {
+pub struct Voltage {
     v: u32,
     mv: u32,
 }
 
 #[derive(Debug, PartialEq)]
-enum Switch {
+pub enum Switch {
     On,
     Off,
 }
 
 #[derive(Debug)]
-enum Command {
+pub enum Command {
     Status,
     Beep,
     Power,
@@ -37,19 +40,19 @@ pub struct Status {
 }
 
 #[derive(Debug, PartialEq)]
-enum Channel {
+pub enum Channel {
     _1,
     _2,
 }
 
 #[derive(Debug, PartialEq)]
-enum Lock {
+pub enum Lock {
     Locked,
     Unlocked,
 }
 
 #[derive(Debug, PartialEq)]
-enum Mode {
+pub enum Mode {
     CC,
     CV,
 }
@@ -58,7 +61,7 @@ impl fmt::Display for Status {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "Channel1: {:?}, Channel2: {:?}) Lock: {:?}, Beep: {:?}, Output: {:?}",
+            "Channel1: {:?}, Channel2: {:?} Lock: {:?}, Beep: {:?}, Output: {:?}",
             self.mode(Channel::_1),
             self.mode(Channel::_2),
             self.lock(),
@@ -91,11 +94,11 @@ impl std::str::FromStr for Current {
 }
 
 impl Status {
-    fn new(status: u8) -> Self {
+    pub fn new(status: u8) -> Self {
         Status { _raw: status }
     }
 
-    fn mode(&self, channel: Channel) -> Mode {
+    pub fn mode(&self, channel: Channel) -> Mode {
         let bitmask = match channel {
             Channel::_1 => 1,
             Channel::_2 => 2,
@@ -106,7 +109,7 @@ impl Status {
         }
     }
 
-    fn beep(&self) -> Switch {
+    pub fn beep(&self) -> Switch {
         let bitmask = 16;
         match (self._raw & bitmask) != 0 {
             true => Switch::On,
@@ -114,7 +117,7 @@ impl Status {
         }
     }
 
-    fn lock(&self) -> Lock {
+    pub fn lock(&self) -> Lock {
         let bitmask = 32;
         match (self._raw & bitmask) != 0 {
             true => Lock::Locked,
@@ -122,13 +125,58 @@ impl Status {
         }
     }
 
-    fn output(&self) -> Switch {
+    pub fn output(&self) -> Switch {
         let bitmask = 64;
         match (self._raw & bitmask) != 0 {
             true => Switch::On,
             false => Switch::Off,
         }
     }
+}
+
+pub fn find_serial_port() -> Result<Box<dyn serialport::SerialPort>, String> {
+    let serial_devices: Vec<serialport::SerialPortInfo> = serialport::available_ports()
+        .unwrap()
+        .into_iter()
+        .filter(|info| match &info.port_type {
+            serialport::SerialPortType::UsbPort(usb) => usb.vid == 1046,
+            _ => false,
+        })
+        .collect();
+
+    match serial_devices.len() {
+        0 => Err(String::from("No Power Supply Found!")),
+        1 => {
+            let mut serial = serialport::open(&serial_devices[0].port_name).unwrap();
+            serial.set_timeout(time::Duration::from_millis(50)).unwrap();
+            serial.set_baud_rate(9600).unwrap();
+            serial.set_parity(serialport::Parity::None).unwrap();
+            serial.set_stop_bits(serialport::StopBits::One).unwrap();
+            Ok(serial)
+        }
+        _ => Err(String::from("Multiple Power Supplies Found!")),
+    }
+}
+
+pub fn run_command(serial: &mut Box<dyn serialport::SerialPort>, command: &str) -> String {
+    serial.write(command.as_bytes()).unwrap();
+    serial.flush().unwrap();
+    let mut result: String = String::from("");
+    loop {
+        let mut serial_buf: Vec<u8> = vec![0; 1000];
+        let r = serial.read(serial_buf.as_mut_slice());
+        match r {
+            Ok(t) => {
+                result.push_str(&str::from_utf8(&serial_buf.as_slice()[..t]).unwrap());
+            }
+            Err(ref e) if e.kind() == io::ErrorKind::TimedOut => {
+                break;
+            }
+            Err(e) => eprintln!("Error {:?}", e),
+        }
+    }
+
+    return result;
 }
 
 #[cfg(test)]

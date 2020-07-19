@@ -88,6 +88,55 @@ mod cli {
 }
 
 fn main() -> io::Result<()> {
-    let _ = cli::Ka3000::from_args();
+    let args = cli::Ka3000::from_args();
+    let mut serial = ka3000::find_serial_port().unwrap();
+    match args.command {
+        cli::Command::Power { switch } => match switch {
+            cli::Switch::On => ka3000::run_command(&mut serial, "OUT1"),
+            cli::Switch::Off => ka3000::run_command(&mut serial, "OUT0"),
+        },
+        cli::Command::Status => {
+            let r = ka3000::run_command(&mut serial, "STATUS?");
+            let status = ka3000::Status::new(r.as_bytes()[0]);
+            println!("Voltage: {}", ka3000::run_command(&mut serial, "VOUT1?"));
+            println!("Current: {}", ka3000::run_command(&mut serial, "IOUT1?"));
+            println!("{}", status);
+            String::from("")
+        }
+        cli::Command::Voltage { v, mv, channel } => {
+            let command = format!("VSET{}:{}.{}", channel, v, mv);
+            println!("{}", command);
+            let r = ka3000::run_command(&mut serial, &command);
+            println!("{}", r);
+            r
+        }
+        cli::Command::Current { a, ma, channel } => {
+            let command = format!("ISET{}:{}.{}", channel, a, ma);
+            println!("{}", command);
+            let r = ka3000::run_command(&mut serial, &command);
+            println!("{}", r);
+            r
+        }
+        cli::Command::Save { id } => {
+            let command = format!("SAV{}", id);
+            ka3000::run_command(&mut serial, &command)
+        }
+        cli::Command::Load { id } => {
+            let command = format!("RCL{}", id);
+            ka3000::run_command(&mut serial, &command)
+        }
+        cli::Command::Ocp { switch } => match switch {
+            cli::Switch::On => ka3000::run_command(&mut serial, "OCP1"),
+            cli::Switch::Off => ka3000::run_command(&mut serial, "OCP0"),
+        },
+        cli::Command::Ovp { switch } => match switch {
+            cli::Switch::On => ka3000::run_command(&mut serial, "OVP1"),
+            cli::Switch::Off => ka3000::run_command(&mut serial, "OVP0"),
+        },
+        cli::Command::Beep { switch } => match switch {
+            cli::Switch::On => ka3000::run_command(&mut serial, "BEEP1"),
+            cli::Switch::Off => ka3000::run_command(&mut serial, "BEEP0"),
+        },
+    };
     std::process::exit(1);
 }
