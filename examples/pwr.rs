@@ -2,13 +2,10 @@ use serialport;
 use std::io;
 use std::io::{Read, Write};
 use std::str;
-use std::str::{FromStr, ParseBoolError};
-use std::{thread, time};
+use std::time;
 use structopt::StructOpt;
 
 mod cli {
-
-    use std::path::PathBuf;
 
     #[derive(Debug)]
     pub enum Switch {
@@ -37,7 +34,7 @@ mod cli {
     }
 }
 
-fn run_command(serial: &mut Box<serialport::SerialPort>, command: &str) -> String {
+fn run_command(serial: &mut Box<dyn serialport::SerialPort>, command: &str) -> String {
     serial.write(command.as_bytes()).unwrap();
     serial.flush().unwrap();
     let mut result: String = String::from("");
