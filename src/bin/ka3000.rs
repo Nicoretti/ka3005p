@@ -1,9 +1,11 @@
+use std::clone::Clone;
+use std::convert::TryInto;
 use std::io;
 use structopt::StructOpt;
 
 mod cli {
 
-    #[derive(Debug)]
+    #[derive(Debug, Copy, Clone)]
     pub enum Switch {
         On,
         Off,
@@ -20,7 +22,7 @@ mod cli {
         }
     }
 
-    #[derive(structopt::StructOpt, Debug)]
+    #[derive(structopt::StructOpt, Debug, Copy, Clone)]
     pub enum Command {
         /// Turns on or off the ouput of the power supply
         Power {
@@ -35,9 +37,6 @@ mod cli {
             v: u32,
             #[structopt(help = "milli volts")]
             mv: u32,
-            // TODO: add more robust type which only allways avialable ids
-            #[structopt(help = "1,2,3,4", default_value = "1")]
-            channel: u32,
         },
         /// Set the current of the ouput or config
         Current {
@@ -45,9 +44,6 @@ mod cli {
             a: u32,
             #[structopt(help = "milli ampere")]
             ma: u32,
-            // TODO: add more robust type which only allways avialable ids
-            #[structopt(help = "1,2,3,4", default_value = "1")]
-            channel: u32,
         },
         /// Saves current pannel settingts to specified config
         Save {
@@ -78,6 +74,35 @@ mod cli {
         },
     }
 
+    impl std::convert::TryInto<ka3000::Command> for Command {
+        type Error = String;
+        fn try_into(self) -> Result<ka3000::Command, Self::Error> {
+            match self {
+                Command::Power { switch } => match switch {
+                    Switch::On => Ok(::ka3000::Command::Power(ka3000::Switch::On)),
+                    Switch::Off => Ok(::ka3000::Command::Power(ka3000::Switch::Off)),
+                },
+                Command::Ovp { switch } => match switch {
+                    Switch::On => Ok(::ka3000::Command::Ovp(ka3000::Switch::On)),
+                    Switch::Off => Ok(::ka3000::Command::Ovp(ka3000::Switch::Off)),
+                },
+                Command::Ocp { switch } => match switch {
+                    Switch::On => Ok(::ka3000::Command::Ocp(ka3000::Switch::On)),
+                    Switch::Off => Ok(::ka3000::Command::Ocp(ka3000::Switch::Off)),
+                },
+                Command::Beep { switch } => match switch {
+                    Switch::On => Ok(::ka3000::Command::Beep(ka3000::Switch::On)),
+                    Switch::Off => Ok(::ka3000::Command::Beep(ka3000::Switch::Off)),
+                },
+                Command::Load { id } => Ok(ka3000::Command::Load(id)),
+                Command::Save { id } => Ok(ka3000::Command::Save(id)),
+                Command::Voltage { v, mv } => Ok(ka3000::Command::Voltage(ka3000::V::new(v, mv))),
+                Command::Current { a, ma } => Ok(ka3000::Command::Current(ka3000::I::new(a, ma))),
+                Command::Status => Err(String::from("Conversion of status is not supported")),
+            }
+        }
+    }
+
     #[derive(structopt::StructOpt, Debug)]
     #[structopt(about = "Remote controls a KA3000 power supply")]
     #[structopt(global_settings(& [structopt::clap::AppSettings::ColoredHelp]))]
@@ -91,67 +116,18 @@ fn main() -> io::Result<()> {
     let args = cli::Ka3000::from_args();
     let mut serial = ka3000::find_serial_port().unwrap();
     match args.command {
-        cli::Command::Power { switch } => match switch {
-            cli::Switch::On => {
-                ka3000::run_command(&mut serial, "OUT1");
-            }
-            cli::Switch::Off => {
-                ka3000::run_command(&mut serial, "OUT0");
-            }
-        },
         cli::Command::Status => {
-            let r = ka3000::run_command(&mut serial, "STATUS?");
-            let status = ka3000::Status::new(r[0]);
-            println!(
-                "Voltage: {}",
-                String::from_utf8_lossy(&ka3000::run_command(&mut serial, "VOUT1?"))
+            println!("{}", ::ka3000::status(serial.as_mut()));
+        }
+        _ => {
+            ::ka3000::execute(
+                serial.as_mut(),
+                args.command
+                    .clone()
+                    .try_into()
+                    .expect("unsupported command converison"),
             );
-            println!(
-                "Current: {}",
-                String::from_utf8_lossy(&ka3000::run_command(&mut serial, "IOUT1?"))
-            );
-            println!("{}", status);
         }
-        cli::Command::Voltage { v, mv, channel } => {
-            let command = format!("VSET{}:{}.{}", channel, v, mv);
-            ka3000::run_command(&mut serial, &command);
-        }
-        cli::Command::Current { a, ma, channel } => {
-            let command = format!("ISET{}:{}.{}", channel, a, ma);
-            ka3000::run_command(&mut serial, &command);
-        }
-        cli::Command::Save { id } => {
-            let command = format!("SAV{}", id);
-            ka3000::run_command(&mut serial, &command);
-        }
-        cli::Command::Load { id } => {
-            let command = format!("RCL{}", id);
-            ka3000::run_command(&mut serial, &command);
-        }
-        cli::Command::Ocp { switch } => match switch {
-            cli::Switch::On => {
-                ka3000::run_command(&mut serial, "OCP1");
-            }
-            cli::Switch::Off => {
-                ka3000::run_command(&mut serial, "OCP0");
-            }
-        },
-        cli::Command::Ovp { switch } => match switch {
-            cli::Switch::On => {
-                ka3000::run_command(&mut serial, "OVP1");
-            }
-            cli::Switch::Off => {
-                ka3000::run_command(&mut serial, "OVP0");
-            }
-        },
-        cli::Command::Beep { switch } => match switch {
-            cli::Switch::On => {
-                ka3000::run_command(&mut serial, "BEEP1");
-            }
-            cli::Switch::Off => {
-                ka3000::run_command(&mut serial, "BEEP0");
-            }
-        },
     };
     std::process::exit(1);
 }
