@@ -11,28 +11,11 @@ pub struct I {
     milli_ampere: u32,
 }
 
-impl I {
-    // TODO: consider structuring it like time ... from milis .... and just store an inernal value
-    pub fn new(ampere: u32, milli_ampere: u32) -> Self {
-        I {
-            ampere,
-            milli_ampere,
-        }
-    }
-}
-
 #[derive(Debug, PartialEq)]
 /// Voltage
 pub struct V {
     volts: u32,
     milli_volts: u32,
-}
-
-impl V {
-    // TODO: consider structuring it like time ... from milis .... and just store an inernal value
-    pub fn new(volts: u32, milli_volts: u32) -> Self {
-        V { volts, milli_volts }
-    }
 }
 
 #[derive(Debug, PartialEq)]
@@ -88,6 +71,23 @@ pub struct Status {
     flags: Flags,
     voltage: V,
     current: I,
+}
+
+impl I {
+    // TODO: consider structuring it like time ... from milis .... and just store an inernal value
+    pub fn new(ampere: u32, milli_ampere: u32) -> Self {
+        I {
+            ampere,
+            milli_ampere,
+        }
+    }
+}
+
+impl V {
+    // TODO: consider structuring it like time ... from milis .... and just store an inernal value
+    pub fn new(volts: u32, milli_volts: u32) -> Self {
+        V { volts, milli_volts }
+    }
 }
 
 impl fmt::Display for V {

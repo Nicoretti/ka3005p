@@ -10,6 +10,7 @@ autobins = false
 [dependencies]
 serialport = "3.3.0"
 structopt = "0.3.15"
+human-panic = "1.0.3"
 
 [[bin]]
 name = "ka3000"

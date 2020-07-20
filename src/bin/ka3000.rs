@@ -1,3 +1,4 @@
+use human_panic;
 use std::clone::Clone;
 use std::convert::TryInto;
 use std::io;
@@ -113,6 +114,7 @@ mod cli {
 }
 
 fn main() -> io::Result<()> {
+    human_panic::setup_panic!();
     let args = cli::Ka3000::from_args();
     let mut serial = ka3000::find_serial_port().unwrap();
     match args.command {
