@@ -1,5 +1,5 @@
-use ka3005p;
 use human_panic;
+use ka3005p;
 use std::clone::Clone;
 use std::convert::TryInto;
 use std::io;
@@ -36,16 +36,12 @@ mod cli {
         /// Set the voltage of the ouput or config
         Voltage {
             #[structopt(help = "volts")]
-            v: u32,
-            #[structopt(help = "milli volts")]
-            mv: u32,
+            v: ka3005p::V,
         },
         /// Set the current of the ouput or config
         Current {
             #[structopt(help = "ampere")]
-            a: u32,
-            #[structopt(help = "milli ampere")]
-            ma: u32,
+            a: ka3005p::I,
         },
         /// Saves current pannel settingts to specified config
         Save {
@@ -98,8 +94,8 @@ mod cli {
                 },
                 Command::Load { id } => Ok(ka3005p::Command::Load(id)),
                 Command::Save { id } => Ok(ka3005p::Command::Save(id)),
-                Command::Voltage { v, mv } => Ok(ka3005p::Command::Voltage(ka3005p::V::new(v, mv))),
-                Command::Current { a, ma } => Ok(ka3005p::Command::Current(ka3005p::I::new(a, ma))),
+                Command::Voltage { v } => Ok(ka3005p::Command::Voltage(v)),
+                Command::Current { a } => Ok(ka3005p::Command::Current(a)),
                 Command::Status => Err(String::from("Conversion of status is not supported")),
             }
         }

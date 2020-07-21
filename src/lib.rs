@@ -4,14 +4,14 @@ use std::str;
 use std::str::FromStr;
 use std::time;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 /// Current
 pub struct I {
     ampere: u32,
     milli_ampere: u32,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 /// Voltage
 pub struct V {
     volts: u32,
