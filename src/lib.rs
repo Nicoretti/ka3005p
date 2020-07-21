@@ -1,4 +1,5 @@
 use anyhow;
+use anyhow::Context;
 use std::fmt;
 use std::io;
 use std::str;
@@ -243,44 +244,47 @@ impl std::convert::From<Command> for String {
     }
 }
 
-pub fn execute(serial: &mut dyn serialport::SerialPort, command: Command) {
-    run_command(serial, &String::from(command));
+pub fn execute(serial: &mut dyn serialport::SerialPort, command: Command) -> anyhow::Result<()> {
+    run_command(serial, &String::from(command))?;
+    Ok(())
 }
 
-/// Retrview status information from the power supply
-pub fn status(serial: &mut dyn serialport::SerialPort) -> Status {
-    let flags = Flags::new(run_command(serial, "STATUS?")[0]);
+/// Retrieve status information from the power supply
+pub fn status(serial: &mut dyn serialport::SerialPort) -> anyhow::Result<Status> {
+    let flags = Flags::new(run_command(serial, "STATUS?")?[0]);
     let voltage = V::from_str(
-        String::from_utf8_lossy(&run_command(serial, "VOUT1?"))
+        String::from_utf8_lossy(&run_command(serial, "VOUT1?")?)
             .into_owned()
             .as_str(),
-    )
-    .unwrap();
+    )?;
     let current = I::from_str(
-        String::from_utf8_lossy(&run_command(serial, "IOUT1?"))
+        String::from_utf8_lossy(&run_command(serial, "IOUT1?")?)
             .into_owned()
             .as_str(),
-    )
-    .unwrap();
-    Status::new(flags, voltage, current)
+    )?;
+    Ok(Status::new(flags, voltage, current))
 }
 
-fn run_command(serial: &mut dyn serialport::SerialPort, command: &str) -> Vec<u8> {
-    serial.write(command.as_bytes()).unwrap();
-    serial.flush().unwrap();
+fn run_command(serial: &mut dyn serialport::SerialPort, command: &str) -> anyhow::Result<Vec<u8>> {
+    serial.write(command.as_bytes())?;
+    serial.flush()?;
     let mut result: Vec<u8> = Vec::new();
-    loop {
-        let mut serial_buf: Vec<u8> = vec![0; 1000];
-        let r = serial.read(serial_buf.as_mut_slice());
-        match r {
-            Ok(t) => result.extend(serial_buf.drain(..t)),
-            Err(ref e) if e.kind() == io::ErrorKind::TimedOut => {
-                break;
+    let mut is_done = false;
+    while !is_done {
+        let mut serial_buf: Vec<u8> = vec![0; 512];
+        match serial.read(serial_buf.as_mut_slice()) {
+            Ok(count) => {
+                result.extend(serial_buf.drain(..count));
             }
-            Err(e) => eprintln!("Error {:?}", e),
-        }
+            Err(ref e) if e.kind() == io::ErrorKind::TimedOut => {
+                is_done = true;
+            }
+            Err(e) => {
+                return Err(e).with_context(|| "could not retrieve response from power supply")
+            }
+        };
     }
-    return result;
+    Ok(result)
 }
 
 #[cfg(test)]

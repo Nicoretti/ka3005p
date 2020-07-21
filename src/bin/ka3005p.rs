@@ -15,12 +15,12 @@ mod cli {
     }
 
     impl std::str::FromStr for Switch {
-        type Err = String;
+        type Err = anyhow::Error;
         fn from_str(s: &str) -> Result<Self, Self::Err> {
             match s.to_lowercase().as_ref() {
                 "on" => Ok(Switch::On),
                 "off" => Ok(Switch::Off),
-                _ => Err(String::from("Value must be either 'on' or 'off'")),
+                _ => Err(anyhow::anyhow!("Value must be either 'on' or 'off'")),
             }
         }
     }
@@ -117,7 +117,7 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
     let mut serial = ka3005p::find_serial_port()?;
     match args.command {
         cli::Command::Status => {
-            println!("{}", ka3005p::status(serial.as_mut()));
+            println!("{}", ka3005p::status(serial.as_mut())?);
         }
         _ => {
             ka3005p::execute(
@@ -126,7 +126,7 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
                     .clone()
                     .try_into()
                     .with_context(|| "unsupported command conversion")?,
-            );
+            )?;
         }
     };
     std::process::exit(1);
