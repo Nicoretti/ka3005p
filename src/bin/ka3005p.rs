@@ -46,13 +46,11 @@ mod cli {
         },
         /// Saves current pannel settingts to specified config
         Save {
-            // TODO: add more robust type which only allways avialable ids
             #[structopt(help = "1,2,3,4")]
             id: u32,
         },
         /// Loads config settings of specified no.
         Load {
-            // TODO: add more robust type which only allways avialable ids
             #[structopt(help = "1,2,3,4")]
             id: u32,
         },

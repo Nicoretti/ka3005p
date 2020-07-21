@@ -76,7 +76,6 @@ pub struct Status {
 }
 
 impl I {
-    // TODO: consider structuring it like time ... from milis .... and just store an inernal value
     pub fn new(ampere: u32, milli_ampere: u32) -> Self {
         I {
             ampere,
@@ -86,7 +85,6 @@ impl I {
 }
 
 impl V {
-    // TODO: consider structuring it like time ... from milis .... and just store an inernal value
     pub fn new(volts: u32, milli_volts: u32) -> Self {
         V { volts, milli_volts }
     }
