@@ -1,3 +1,4 @@
+use anyhow;
 use std::fmt;
 use std::io;
 use std::str;
@@ -191,7 +192,7 @@ impl Flags {
     }
 }
 
-pub fn find_serial_port() -> Result<Box<dyn serialport::SerialPort>, String> {
+pub fn find_serial_port() -> anyhow::Result<Box<dyn serialport::SerialPort>> {
     let serial_devices: Vec<serialport::SerialPortInfo> = serialport::available_ports()
         .unwrap()
         .into_iter()
@@ -202,7 +203,7 @@ pub fn find_serial_port() -> Result<Box<dyn serialport::SerialPort>, String> {
         .collect();
 
     match serial_devices.len() {
-        0 => Err(String::from("No Power Supply Found!")),
+        0 => Err(anyhow::anyhow!("No Power Supply Found!")),
         1 => {
             let mut serial = serialport::open(&serial_devices[0].port_name).unwrap();
             serial.set_timeout(time::Duration::from_millis(50)).unwrap();
@@ -211,7 +212,7 @@ pub fn find_serial_port() -> Result<Box<dyn serialport::SerialPort>, String> {
             serial.set_stop_bits(serialport::StopBits::One).unwrap();
             Ok(serial)
         }
-        _ => Err(String::from("Multiple Power Supplies Found!")),
+        _ => Err(anyhow::anyhow!("Multiple Power Supplies Found!")),
     }
 }
 

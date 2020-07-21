@@ -1,8 +1,9 @@
+use anyhow;
+use anyhow::Context;
 use human_panic;
 use ka3005p;
 use std::clone::Clone;
 use std::convert::TryInto;
-use std::io;
 use structopt::StructOpt;
 
 mod cli {
@@ -73,8 +74,8 @@ mod cli {
     }
 
     impl std::convert::TryInto<ka3005p::Command> for Command {
-        type Error = String;
-        fn try_into(self) -> Result<ka3005p::Command, Self::Error> {
+        type Error = anyhow::Error;
+        fn try_into(self) -> anyhow::Result<ka3005p::Command, Self::Error> {
             match self {
                 Command::Power { switch } => match switch {
                     Switch::On => Ok(ka3005p::Command::Power(ka3005p::Switch::On)),
@@ -96,7 +97,7 @@ mod cli {
                 Command::Save { id } => Ok(ka3005p::Command::Save(id)),
                 Command::Voltage { v } => Ok(ka3005p::Command::Voltage(v)),
                 Command::Current { a } => Ok(ka3005p::Command::Current(a)),
-                Command::Status => Err(String::from("Conversion of status is not supported")),
+                Command::Status => Err(anyhow::anyhow!("Conversion of status is not supported")),
             }
         }
     }
@@ -110,10 +111,10 @@ mod cli {
     }
 }
 
-fn main() -> io::Result<()> {
+fn main() -> ::anyhow::Result<(), anyhow::Error> {
     human_panic::setup_panic!();
     let args = cli::Ka3005p::from_args();
-    let mut serial = ka3005p::find_serial_port().unwrap();
+    let mut serial = ka3005p::find_serial_port()?;
     match args.command {
         cli::Command::Status => {
             println!("{}", ka3005p::status(serial.as_mut()));
@@ -124,7 +125,7 @@ fn main() -> io::Result<()> {
                 args.command
                     .clone()
                     .try_into()
-                    .expect("unsupported command converison"),
+                    .with_context(|| "unsupported command conversion")?,
             );
         }
     };
