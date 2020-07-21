@@ -106,7 +106,7 @@ mod cli {
     }
 
     #[derive(structopt::StructOpt, Debug)]
-    #[structopt(about = "Remote controls a KA3000 power supply")]
+    #[structopt(about = "Controls a KA3005P bench power supply through its serial interface")]
     #[structopt(global_settings(& [structopt::clap::AppSettings::ColoredHelp]))]
     pub struct Ka3005p {
         #[structopt(subcommand)]
