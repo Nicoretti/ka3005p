@@ -163,7 +163,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "ka3000"
+name = "ka3005p"
 version = "0.1.0"
 dependencies = [
  "human-panic",

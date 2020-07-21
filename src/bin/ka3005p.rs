@@ -1,3 +1,4 @@
+use ka3005p;
 use human_panic;
 use std::clone::Clone;
 use std::convert::TryInto;
@@ -75,30 +76,30 @@ mod cli {
         },
     }
 
-    impl std::convert::TryInto<ka3000::Command> for Command {
+    impl std::convert::TryInto<ka3005p::Command> for Command {
         type Error = String;
-        fn try_into(self) -> Result<ka3000::Command, Self::Error> {
+        fn try_into(self) -> Result<ka3005p::Command, Self::Error> {
             match self {
                 Command::Power { switch } => match switch {
-                    Switch::On => Ok(::ka3000::Command::Power(ka3000::Switch::On)),
-                    Switch::Off => Ok(::ka3000::Command::Power(ka3000::Switch::Off)),
+                    Switch::On => Ok(ka3005p::Command::Power(ka3005p::Switch::On)),
+                    Switch::Off => Ok(ka3005p::Command::Power(ka3005p::Switch::Off)),
                 },
                 Command::Ovp { switch } => match switch {
-                    Switch::On => Ok(::ka3000::Command::Ovp(ka3000::Switch::On)),
-                    Switch::Off => Ok(::ka3000::Command::Ovp(ka3000::Switch::Off)),
+                    Switch::On => Ok(ka3005p::Command::Ovp(ka3005p::Switch::On)),
+                    Switch::Off => Ok(ka3005p::Command::Ovp(ka3005p::Switch::Off)),
                 },
                 Command::Ocp { switch } => match switch {
-                    Switch::On => Ok(::ka3000::Command::Ocp(ka3000::Switch::On)),
-                    Switch::Off => Ok(::ka3000::Command::Ocp(ka3000::Switch::Off)),
+                    Switch::On => Ok(ka3005p::Command::Ocp(ka3005p::Switch::On)),
+                    Switch::Off => Ok(ka3005p::Command::Ocp(ka3005p::Switch::Off)),
                 },
                 Command::Beep { switch } => match switch {
-                    Switch::On => Ok(::ka3000::Command::Beep(ka3000::Switch::On)),
-                    Switch::Off => Ok(::ka3000::Command::Beep(ka3000::Switch::Off)),
+                    Switch::On => Ok(ka3005p::Command::Beep(ka3005p::Switch::On)),
+                    Switch::Off => Ok(ka3005p::Command::Beep(ka3005p::Switch::Off)),
                 },
-                Command::Load { id } => Ok(ka3000::Command::Load(id)),
-                Command::Save { id } => Ok(ka3000::Command::Save(id)),
-                Command::Voltage { v, mv } => Ok(ka3000::Command::Voltage(ka3000::V::new(v, mv))),
-                Command::Current { a, ma } => Ok(ka3000::Command::Current(ka3000::I::new(a, ma))),
+                Command::Load { id } => Ok(ka3005p::Command::Load(id)),
+                Command::Save { id } => Ok(ka3005p::Command::Save(id)),
+                Command::Voltage { v, mv } => Ok(ka3005p::Command::Voltage(ka3005p::V::new(v, mv))),
+                Command::Current { a, ma } => Ok(ka3005p::Command::Current(ka3005p::I::new(a, ma))),
                 Command::Status => Err(String::from("Conversion of status is not supported")),
             }
         }
@@ -107,7 +108,7 @@ mod cli {
     #[derive(structopt::StructOpt, Debug)]
     #[structopt(about = "Remote controls a KA3000 power supply")]
     #[structopt(global_settings(& [structopt::clap::AppSettings::ColoredHelp]))]
-    pub struct Ka3000 {
+    pub struct Ka3005p {
         #[structopt(subcommand)]
         pub command: Command,
     }
@@ -115,14 +116,14 @@ mod cli {
 
 fn main() -> io::Result<()> {
     human_panic::setup_panic!();
-    let args = cli::Ka3000::from_args();
-    let mut serial = ka3000::find_serial_port().unwrap();
+    let args = cli::Ka3005p::from_args();
+    let mut serial = ka3005p::find_serial_port().unwrap();
     match args.command {
         cli::Command::Status => {
-            println!("{}", ::ka3000::status(serial.as_mut()));
+            println!("{}", ka3005p::status(serial.as_mut()));
         }
         _ => {
-            ::ka3000::execute(
+            ka3005p::execute(
                 serial.as_mut(),
                 args.command
                     .clone()
