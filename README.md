@@ -1,13 +1,13 @@
-#  KA3000
-Is a command line tool to remote control an KA3005P power supply.
+# KA3005P
+Command line tool to control a KA3005P bench power supply through its serial interface.
 
 Example (Getting Help):
 ```
-user@host ~$ ka3000 help
-Remote controls a KA3000 power supply
+user@host ~$ ka3005p help
+Controls a KA3005P bench power supply through its serial interface
 
 USAGE:
-    ka3000 <SUBCOMMAND>
+    ka3005p <SUBCOMMAND>
 
 FLAGS:
     -h, --help       Prints help information
@@ -32,7 +32,7 @@ ka3000-power 0.1.0
 Turns on or off the ouput of the power supply
 
 USAGE:
-    ka3000 power <switch>
+    ka3005p power <switch>
 
 FLAGS:
     -h, --help       Prints help information
@@ -51,6 +51,3 @@ Licensed under either of
 - MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
 
 at your option.
-
-
-
