@@ -285,6 +285,8 @@ fn run_command(serial: &mut dyn serialport::SerialPort, command: &str) -> anyhow
     Ok(result)
 }
 
+pub mod cli;
+
 #[cfg(test)]
 mod tests {
     use super::*;
