@@ -1,28 +1,11 @@
 use std::clone::Clone;
 
-#[derive(Debug, Copy, Clone)]
-pub enum Switch {
-    On,
-    Off,
-}
-
-impl std::str::FromStr for Switch {
-    type Err = anyhow::Error;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s.to_lowercase().as_ref() {
-            "on" => Ok(Switch::On),
-            "off" => Ok(Switch::Off),
-            _ => Err(anyhow::anyhow!("Value must be either 'on' or 'off'")),
-        }
-    }
-}
-
 #[derive(structopt::StructOpt, Debug, Copy, Clone)]
 pub enum Command {
     /// Turns on or off the ouput of the power supply
     Power {
         #[structopt(help = "on/off")]
-        switch: Switch,
+        switch: crate::Switch,
     },
     /// Return status inforation about the power spply
     Status,
@@ -49,17 +32,17 @@ pub enum Command {
     /// Enbale/Disable over current protection
     Ocp {
         #[structopt(help = "on/off")]
-        switch: Switch,
+        switch: crate::Switch,
     },
     /// Enbale/Disable over voltage protection
     Ovp {
         #[structopt(help = "on/off")]
-        switch: Switch,
+        switch: crate::Switch,
     },
     /// Enbale/Disable Beep
     Beep {
         #[structopt(help = "on/off")]
-        switch: Switch,
+        switch: crate::Switch,
     },
     /// Read commands from stdin and execute them
     Interactive,
@@ -69,22 +52,10 @@ impl std::convert::TryInto<crate::Command> for Command {
     type Error = anyhow::Error;
     fn try_into(self) -> anyhow::Result<crate::Command, Self::Error> {
         match self {
-            Command::Power { switch } => match switch {
-                Switch::On => Ok(crate::Command::Power(crate::Switch::On)),
-                Switch::Off => Ok(crate::Command::Power(crate::Switch::Off)),
-            },
-            Command::Ovp { switch } => match switch {
-                Switch::On => Ok(crate::Command::Ovp(crate::Switch::On)),
-                Switch::Off => Ok(crate::Command::Ovp(crate::Switch::Off)),
-            },
-            Command::Ocp { switch } => match switch {
-                Switch::On => Ok(crate::Command::Ocp(crate::Switch::On)),
-                Switch::Off => Ok(crate::Command::Ocp(crate::Switch::Off)),
-            },
-            Command::Beep { switch } => match switch {
-                Switch::On => Ok(crate::Command::Beep(crate::Switch::On)),
-                Switch::Off => Ok(crate::Command::Beep(crate::Switch::Off)),
-            },
+            Command::Power { switch } => Ok(crate::Command::Power(switch)),
+            Command::Ovp { switch } => Ok(crate::Command::Ovp(switch)),
+            Command::Ocp { switch } => Ok(crate::Command::Ocp(switch)),
+            Command::Beep { switch } => Ok(crate::Command::Beep(switch)),
             Command::Load { id } => Ok(crate::Command::Load(id)),
             Command::Save { id } => Ok(crate::Command::Save(id)),
             Command::Voltage { v } => Ok(crate::Command::Voltage(v)),

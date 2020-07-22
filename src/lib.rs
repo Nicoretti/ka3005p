@@ -5,6 +5,8 @@ use std::str;
 use std::str::FromStr;
 use std::time;
 
+pub mod cli;
+
 #[derive(Debug, PartialEq, Clone, Copy)]
 /// Current
 pub struct I {
@@ -19,7 +21,7 @@ pub struct V {
     milli_volts: u32,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Copy, Clone)]
 pub enum Switch {
     On,
     Off,
@@ -86,6 +88,17 @@ impl I {
 impl V {
     pub fn new(volts: u32, milli_volts: u32) -> Self {
         V { volts, milli_volts }
+    }
+}
+
+impl std::str::FromStr for Switch {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_ref() {
+            "on" => Ok(Switch::On),
+            "off" => Ok(Switch::Off),
+            _ => Err(anyhow::anyhow!("Value must be either 'on' or 'off'")),
+        }
     }
 }
 
@@ -290,8 +303,6 @@ fn run_command(serial: &mut dyn serialport::SerialPort, command: &str) -> anyhow
     }
     Ok(result)
 }
-
-pub mod cli;
 
 #[cfg(test)]
 mod tests {
