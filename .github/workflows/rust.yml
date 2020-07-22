@@ -22,3 +22,5 @@ jobs:
       run: cargo build --all-targets --verbose
     - name: Run tests
       run: cargo test --verbose
+    - name: Lint 
+      run: cargo clippy
