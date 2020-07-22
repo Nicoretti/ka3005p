@@ -1,3 +1,4 @@
+#![deny(warnings)]
 use anyhow::Context;
 use std::fmt;
 use std::io;
