@@ -1,3 +1,5 @@
+![Rust](https://github.com/Nicoretti/ka3005p/workflows/Rust/badge.svg)
+
 # KA3005P
 Command line tool to control a KA3005P bench power supply through its serial interface.
 
