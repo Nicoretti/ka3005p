@@ -1,5 +1,4 @@
 use std::clone::Clone;
-use structopt;
 
 #[derive(Debug, Copy, Clone)]
 pub enum Switch {

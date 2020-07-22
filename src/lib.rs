@@ -1,4 +1,3 @@
-use anyhow;
 use anyhow::Context;
 use std::fmt;
 use std::io;
@@ -122,7 +121,7 @@ impl std::str::FromStr for V {
     type Err = std::num::ParseIntError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let normalized = s.trim().to_lowercase();
-        let parts: Vec<&str> = normalized.split(".").collect();
+        let parts: Vec<&str> = normalized.split('.').collect();
         let v = parts[0].parse::<u32>()?;
         let mv = parts[1].parse::<u32>()?;
         Ok(V::new(v, mv))
@@ -133,7 +132,7 @@ impl std::str::FromStr for I {
     type Err = std::num::ParseIntError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let normalized = s.trim().to_lowercase();
-        let parts: Vec<&str> = normalized.split(".").collect();
+        let parts: Vec<&str> = normalized.split('.').collect();
         let a = parts[0].parse::<u32>()?;
         let ma = parts[1].parse::<u32>()?;
         Ok(I::new(a, ma))
@@ -160,33 +159,37 @@ impl Flags {
             Channel::_1 => 1,
             Channel::_2 => 2,
         };
-        match (self.flags & bitmask) == 0 {
-            true => Mode::CC,
-            false => Mode::CV,
+        if (self.flags & bitmask) == 0 {
+            Mode::CC
+        } else {
+            Mode::CV
         }
     }
 
     pub fn beep(&self) -> Switch {
         let bitmask = 16;
-        match (self.flags & bitmask) != 0 {
-            true => Switch::On,
-            false => Switch::Off,
+        if (self.flags & bitmask) != 0 {
+            Switch::On
+        } else {
+            Switch::Off
         }
     }
 
     pub fn lock(&self) -> Lock {
         let bitmask = 32;
-        match (self.flags & bitmask) != 0 {
-            true => Lock::Locked,
-            false => Lock::Unlocked,
+        if (self.flags & bitmask) != 0 {
+            Lock::Locked
+        } else {
+            Lock::Unlocked
         }
     }
 
     pub fn output(&self) -> Switch {
         let bitmask = 64;
-        match (self.flags & bitmask) != 0 {
-            true => Switch::On,
-            false => Switch::Off,
+        if (self.flags & bitmask) != 0 {
+            Switch::On
+        } else {
+            Switch::Off
         }
     }
 }
@@ -264,7 +267,10 @@ pub fn status(serial: &mut dyn serialport::SerialPort) -> anyhow::Result<Status>
 }
 
 fn run_command(serial: &mut dyn serialport::SerialPort, command: &str) -> anyhow::Result<Vec<u8>> {
-    serial.write(command.as_bytes())?;
+    let bytes = command.as_bytes();
+    if !serial.write(bytes)? == bytes.len() {
+        return Err(anyhow::anyhow!("Could not write command"));
+    }
     serial.flush()?;
     let mut result: Vec<u8> = Vec::new();
     let mut is_done = false;

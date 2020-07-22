@@ -1,7 +1,4 @@
-use anyhow;
 use anyhow::Context;
-use human_panic;
-use ka3005p;
 use std::convert::TryInto;
 use std::io::BufRead;
 use structopt::StructOpt;
@@ -17,7 +14,7 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
         ka3005p::cli::Command::Interactive => {
             for line in std::io::BufReader::new(std::io::stdin()).lines() {
                 let normalized = String::from(line?.trim());
-                let mut argv: Vec<&str> = normalized.split(" ").collect();
+                let mut argv: Vec<&str> = normalized.split(' ').collect();
                 argv.insert(0, "ka3005p");
                 let arguments = ka3005p::cli::Ka3005p::from_iter(argv.into_iter());
                 ka3005p::execute(
