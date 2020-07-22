@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install system dependencies
+      run: sudo apt-get install pkg-config libudev
     - name: Build
       run: cargo build --all-targets --verbose
     - name: Run tests
