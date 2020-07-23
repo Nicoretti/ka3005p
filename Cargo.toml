@@ -4,6 +4,11 @@ version = "0.1.0"
 authors = ["Nicola Coretti <nico.coretti@gmail.com>"]
 edition = "2018"
 autobins = false
+description = "cli tool to remote control a ka3005p power supply"
+homepage = "https://github.com/Nicoretti/ka3005p"
+repository = "https://github.com/Nicoretti/ka3005p"
+keywords = ["power-supply", "remote-control", "serial", "ka3000", "ka3005p"]
+categories = ["Command line utilities"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
