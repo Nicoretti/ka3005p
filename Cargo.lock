@@ -170,7 +170,7 @@ dependencies = [
 
 [[package]]
 name = "ka3005p"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "human-panic",
