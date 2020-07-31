@@ -38,5 +38,5 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
             )?;
         }
     };
-    std::process::exit(1);
+    std::process::exit(0);
 }
