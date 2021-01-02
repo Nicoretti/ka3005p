@@ -245,9 +245,9 @@ dependencies = [
 
 [[package]]
 name = "nix"
-version = "0.14.1"
+version = "0.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6c722bee1037d430d0f8e687bbdbf222f27cc6e4e68d5caf630857bb2b6dbdce"
+checksum = "dd0eaf8df8bab402257e0a5c17a254e4cc1f72a93588a1ddfb5d356c801aa7cb"
 dependencies = [
  "bitflags",
  "cc",
@@ -411,9 +411,9 @@ dependencies = [
 
 [[package]]
 name = "serialport"
-version = "3.3.0"
+version = "4.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5b8d3ecaf58010bedccae17be55d4ed6f2ecde5646fc48ce8c66ea2d35a1419c"
+checksum = "22f37409d980045734250d679750bdf11bd875fec5bb5417dd21bb75d04d31a1"
 dependencies = [
  "CoreFoundation-sys",
  "IOKit-sys",

@@ -72,10 +72,9 @@ fn main() -> io::Result<()> {
             std::process::exit(1);
         }
         1 => {
-            let mut serial = serialport::open(&serial_devices[0].port_name).unwrap();
+            let mut serial = serialport::new(&serial_devices[0].port_name, 9600).open().unwrap();
 
             serial.set_timeout(time::Duration::from_millis(50)).unwrap();
-            serial.set_baud_rate(9600).unwrap();
             serial.set_parity(serialport::Parity::None).unwrap();
             serial.set_stop_bits(serialport::StopBits::One).unwrap();
 

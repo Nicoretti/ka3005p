@@ -15,7 +15,7 @@ categories = ["command-line-utilities"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-serialport = "3.3.0"
+serialport = "4.0.0"
 structopt = "0.3.15"
 human-panic = "1.0.3"
 anyhow = "1.0.31"
