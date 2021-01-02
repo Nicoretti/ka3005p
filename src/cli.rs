@@ -12,12 +12,12 @@ pub enum Command {
     /// Set the voltage of the ouput or config
     Voltage {
         #[structopt(help = "volts")]
-        v: crate::V,
+        v: f32,
     },
     /// Set the current of the ouput or config
     Current {
         #[structopt(help = "ampere")]
-        a: crate::I,
+        a: f32,
     },
     /// Saves current pannel settingts to specified config
     Save {

@@ -8,20 +8,6 @@ use std::time;
 
 pub mod cli;
 
-#[derive(Debug, PartialEq, Clone, Copy)]
-/// Current
-pub struct I {
-    ampere: u32,
-    milli_ampere: u32,
-}
-
-#[derive(Debug, PartialEq, Clone, Copy)]
-/// Voltage
-pub struct V {
-    volts: u32,
-    milli_volts: u32,
-}
-
 #[derive(Debug, PartialEq, Copy, Clone)]
 pub enum Switch {
     On,
@@ -43,20 +29,25 @@ pub enum Command {
     /// Load stored setting into pannel
     Load(u32),
     /// Sets the voltage
-    Voltage(V),
+    Voltage(f32),
     /// Sets the current
-    Current(I),
+    Current(f32),
 }
 
 #[derive(Debug, PartialEq)]
 pub struct Flags {
     flags: u8,
+    pub channel1: Mode,
+    pub channel2: Mode,
+    pub beep: Switch,
+    pub lock: Lock,
+    pub output: Switch,
 }
 
 #[derive(Debug, PartialEq)]
 pub enum Channel {
-    _1,
-    _2,
+    One,
+    Two,
 }
 
 #[derive(Debug, PartialEq)]
@@ -72,23 +63,23 @@ pub enum Mode {
 }
 
 pub struct Status {
-    flags: Flags,
-    voltage: V,
-    current: I,
+    pub flags: Flags,
+    pub voltage: f32,
+    pub current: f32,
 }
 
-impl I {
-    pub fn new(ampere: u32, milli_ampere: u32) -> Self {
-        I {
-            ampere,
-            milli_ampere,
+impl From<Switch> for bool {
+    fn from(w: Switch) -> bool {
+        match w {
+            Switch::On => true,
+            Switch::Off => false,
         }
     }
 }
 
-impl V {
-    pub fn new(volts: u32, milli_volts: u32) -> Self {
-        V { volts, milli_volts }
+impl std::convert::From<bool> for Switch {
+    fn from(x: bool) -> Self {
+        if x {Switch::On} else {Switch::Off}
     }
 }
 
@@ -103,18 +94,6 @@ impl std::str::FromStr for Switch {
     }
 }
 
-impl fmt::Display for V {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}.{} V", self.volts, self.milli_volts)
-    }
-}
-
-impl fmt::Display for I {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}.{} A", self.ampere, self.milli_ampere)
-    }
-}
-
 impl fmt::Display for Status {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
@@ -122,39 +101,17 @@ impl fmt::Display for Status {
             "Voltage: {}, Current: {}, Channel1: {:?}, Channel2: {:?} Lock: {:?}, Beep: {:?}, Output: {:?}",
             self.voltage,
             self.current,
-            self.flags.mode(Channel::_1),
-            self.flags.mode(Channel::_2),
-            self.flags.lock(),
-            self.flags.beep(),
-            self.flags.output(),
+            self.flags.channel1,
+            self.flags.channel2,
+            self.flags.lock,
+            self.flags.beep,
+            self.flags.output,
         )
     }
 }
 
-impl std::str::FromStr for V {
-    type Err = std::num::ParseIntError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let normalized = s.trim().to_lowercase();
-        let parts: Vec<&str> = normalized.split('.').collect();
-        let v = parts[0].parse::<u32>()?;
-        let mv = parts[1].parse::<u32>()?;
-        Ok(V::new(v, mv))
-    }
-}
-
-impl std::str::FromStr for I {
-    type Err = std::num::ParseIntError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let normalized = s.trim().to_lowercase();
-        let parts: Vec<&str> = normalized.split('.').collect();
-        let a = parts[0].parse::<u32>()?;
-        let ma = parts[1].parse::<u32>()?;
-        Ok(I::new(a, ma))
-    }
-}
-
 impl Status {
-    pub fn new(flags: Flags, voltage: V, current: I) -> Self {
+    pub fn new(flags: Flags, voltage: f32, current: f32) -> Self {
         Status {
             flags,
             voltage,
@@ -165,46 +122,12 @@ impl Status {
 
 impl Flags {
     pub fn new(flags: u8) -> Self {
-        Flags { flags }
-    }
-
-    pub fn mode(&self, channel: Channel) -> Mode {
-        let bitmask = match channel {
-            Channel::_1 => 1,
-            Channel::_2 => 2,
-        };
-        if (self.flags & bitmask) == 0 {
-            Mode::CC
-        } else {
-            Mode::CV
-        }
-    }
-
-    pub fn beep(&self) -> Switch {
-        let bitmask = 16;
-        if (self.flags & bitmask) != 0 {
-            Switch::On
-        } else {
-            Switch::Off
-        }
-    }
-
-    pub fn lock(&self) -> Lock {
-        let bitmask = 32;
-        if (self.flags & bitmask) != 0 {
-            Lock::Locked
-        } else {
-            Lock::Unlocked
-        }
-    }
-
-    pub fn output(&self) -> Switch {
-        let bitmask = 64;
-        if (self.flags & bitmask) != 0 {
-            Switch::On
-        } else {
-            Switch::Off
-        }
+        let channel1 = if flags & 0x01 != 0 {Mode::CV} else {Mode::CC};
+        let channel2 = if flags & 0x02 != 0 {Mode::CV} else {Mode::CC};
+        let beep = if flags & 0x10 != 0 {Switch::On} else {Switch::Off};
+        let lock = if flags & 0x20 != 0 {Lock::Locked} else {Lock::Unlocked};
+        let output = if flags & 0x40 != 0 {Switch::On} else {Switch::Off};
+        Flags {flags, channel1, channel2, beep, lock, output}
     }
 }
 
@@ -252,8 +175,8 @@ impl std::convert::From<Command> for String {
             },
             Command::Save(id) => format!("SAV{}", id),
             Command::Load(id) => format!("RCL{}", id),
-            Command::Voltage(v) => format!("VSET1:{}.{}", v.volts, v.milli_volts),
-            Command::Current(i) => format!("ISET1:{}.{}", i.ampere, i.milli_ampere),
+            Command::Voltage(v) => format!("VSET1:{:.3}", v),
+            Command::Current(i) => format!("ISET1:{:.3}", i),
         }
     }
 }
@@ -265,18 +188,24 @@ pub fn execute(serial: &mut dyn serialport::SerialPort, command: Command) -> any
 
 /// Retrieve status information from the power supply
 pub fn status(serial: &mut dyn serialport::SerialPort) -> anyhow::Result<Status> {
-    let flags = Flags::new(run_command(serial, "STATUS?")?[0]);
-    let voltage = V::from_str(
-        String::from_utf8_lossy(&run_command(serial, "VOUT1?")?)
+    let flags = Flags::new(run_command_response(serial, "STATUS?")?[0]);
+    let voltage = f32::from_str(
+        String::from_utf8_lossy(&run_command_response(serial, "VOUT1?")?)
             .into_owned()
             .as_str(),
     )?;
-    let current = I::from_str(
-        String::from_utf8_lossy(&run_command(serial, "IOUT1?")?)
+    let current = f32::from_str(
+        String::from_utf8_lossy(&run_command_response(serial, "IOUT1?")?)
             .into_owned()
             .as_str(),
     )?;
     Ok(Status::new(flags, voltage, current))
+}
+
+fn run_command_response(serial: &mut dyn serialport::SerialPort, command: &str)  -> anyhow::Result<Vec<u8>> {
+    let res = run_command(serial, command)?;
+    anyhow::ensure!(!res.is_empty(), "PSU did not respond with data");
+    Ok(res)
 }
 
 fn run_command(serial: &mut dyn serialport::SerialPort, command: &str) -> anyhow::Result<Vec<u8>> {
@@ -310,80 +239,31 @@ mod tests {
 
     #[test]
     fn test_channel1_status() {
-        assert_eq!(Mode::CC, Flags::new(0).mode(Channel::_1));
-        assert_eq!(Mode::CV, Flags::new(1).mode(Channel::_1));
+        assert_eq!(Mode::CC, Flags::new(0).channel1);
+        assert_eq!(Mode::CV, Flags::new(1).channel1);
     }
 
     #[test]
     fn test_channel2_status() {
-        assert_eq!(Mode::CC, Flags::new(0).mode(Channel::_2));
-        assert_eq!(Mode::CV, Flags::new(2).mode(Channel::_2));
+        assert_eq!(Mode::CC, Flags::new(0).channel2);
+        assert_eq!(Mode::CV, Flags::new(2).channel2);
     }
 
     #[test]
     fn test_beep_status() {
-        assert_eq!(Switch::Off, Flags::new(0).beep());
-        assert_eq!(Switch::On, Flags::new(16).beep());
+        assert_eq!(Switch::Off, Flags::new(0).beep);
+        assert_eq!(Switch::On, Flags::new(16).beep);
     }
 
     #[test]
     fn test_lock_status() {
-        assert_eq!(Lock::Unlocked, Flags::new(0).lock());
-        assert_eq!(Lock::Locked, Flags::new(32).lock());
+        assert_eq!(Lock::Unlocked, Flags::new(0).lock);
+        assert_eq!(Lock::Locked, Flags::new(32).lock);
     }
 
     #[test]
     fn test_output_status() {
-        assert_eq!(Switch::Off, Flags::new(0).output());
-        assert_eq!(Switch::On, Flags::new(64).output());
-    }
-    #[test]
-    fn test_voltage_from_str() {
-        assert_eq!(
-            V {
-                volts: 10,
-                milli_volts: 0
-            },
-            "10.0".parse::<V>().unwrap()
-        );
-        assert_eq!(
-            V {
-                volts: 1,
-                milli_volts: 9
-            },
-            "1.9".parse::<V>().unwrap()
-        );
-        assert_eq!(
-            V {
-                volts: 0,
-                milli_volts: 9
-            },
-            "0.9".parse::<V>().unwrap()
-        );
-    }
-
-    #[test]
-    fn test_current_from_str() {
-        assert_eq!(
-            I {
-                ampere: 10,
-                milli_ampere: 0
-            },
-            "10.0".parse::<I>().unwrap()
-        );
-        assert_eq!(
-            I {
-                ampere: 1,
-                milli_ampere: 9
-            },
-            "1.9".parse::<I>().unwrap()
-        );
-        assert_eq!(
-            I {
-                ampere: 0,
-                milli_ampere: 9
-            },
-            "0.9".parse::<I>().unwrap()
-        );
+        assert_eq!(Switch::Off, Flags::new(0).output);
+        assert_eq!(Switch::On, Flags::new(64).output);
     }
 }
