@@ -10,7 +10,7 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
     let mut serial = ka3005p::find_serial_port()?;
     match args.command {
         ka3005p::cli::Command::Status => {
-            println!("{}", ka3005p::status(serial.as_mut())?);
+            println!("{}", serial.status()?);
         }
         ka3005p::cli::Command::Interactive => {
             for line in std::io::BufReader::new(std::io::stdin()).lines() {
@@ -18,8 +18,7 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
                 let mut argv: Vec<&str> = normalized.split(' ').collect();
                 argv.insert(0, "ka3005p");
                 let arguments = ka3005p::cli::Ka3005p::from_iter(argv.into_iter());
-                ka3005p::execute(
-                    serial.as_mut(),
+                serial.execute(
                     arguments
                         .command
                         .clone()
@@ -29,8 +28,7 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
             }
         }
         _ => {
-            ka3005p::execute(
-                serial.as_mut(),
+            serial.execute(
                 args.command
                     .clone()
                     .try_into()
