@@ -14,6 +14,25 @@ pub enum Switch {
     Off,
 }
 
+impl From<Switch> for bool {
+    fn from(w: Switch) -> bool {
+        match w {
+            Switch::On => true,
+            Switch::Off => false,
+        }
+    }
+}
+
+impl std::convert::From<bool> for Switch {
+    fn from(x: bool) -> Self {
+        if x {
+            Switch::On
+        } else {
+            Switch::Off
+        }
+    }
+}
+
 #[derive(Debug)]
 pub enum Command {
     /// Enable/Disable Power
@@ -68,21 +87,6 @@ pub struct Status {
     pub current: f32,
 }
 
-impl From<Switch> for bool {
-    fn from(w: Switch) -> bool {
-        match w {
-            Switch::On => true,
-            Switch::Off => false,
-        }
-    }
-}
-
-impl std::convert::From<bool> for Switch {
-    fn from(x: bool) -> Self {
-        if x {Switch::On} else {Switch::Off}
-    }
-}
-
 impl std::str::FromStr for Switch {
     type Err = anyhow::Error;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -122,16 +126,43 @@ impl Status {
 
 impl Flags {
     pub fn new(flags: u8) -> Self {
-        let channel1 = if flags & 0x01 != 0 {Mode::CV} else {Mode::CC};
-        let channel2 = if flags & 0x02 != 0 {Mode::CV} else {Mode::CC};
-        let beep = if flags & 0x10 != 0 {Switch::On} else {Switch::Off};
-        let lock = if flags & 0x20 != 0 {Lock::Locked} else {Lock::Unlocked};
-        let output = if flags & 0x40 != 0 {Switch::On} else {Switch::Off};
-        Flags {flags, channel1, channel2, beep, lock, output}
+        let channel1 = if flags & 0x01 != 0 {
+            Mode::CV
+        } else {
+            Mode::CC
+        };
+        let channel2 = if flags & 0x02 != 0 {
+            Mode::CV
+        } else {
+            Mode::CC
+        };
+        let beep = if flags & 0x10 != 0 {
+            Switch::On
+        } else {
+            Switch::Off
+        };
+        let lock = if flags & 0x20 != 0 {
+            Lock::Locked
+        } else {
+            Lock::Unlocked
+        };
+        let output = if flags & 0x40 != 0 {
+            Switch::On
+        } else {
+            Switch::Off
+        };
+        Flags {
+            flags,
+            channel1,
+            channel2,
+            beep,
+            lock,
+            output,
+        }
     }
 }
 
-pub fn find_serial_port() -> anyhow::Result<Box<dyn serialport::SerialPort>> {
+pub fn find_serial_port() -> anyhow::Result<Ka3005p> {
     let serial_devices: Vec<serialport::SerialPortInfo> = serialport::available_ports()
         .unwrap()
         .into_iter()
@@ -143,13 +174,7 @@ pub fn find_serial_port() -> anyhow::Result<Box<dyn serialport::SerialPort>> {
 
     match serial_devices.len() {
         0 => Err(anyhow::anyhow!("No Power Supply Found!")),
-        1 => {
-            let mut serial = serialport::new(&serial_devices[0].port_name, 9600).open().unwrap();
-            serial.set_timeout(time::Duration::from_millis(50)).unwrap();
-            serial.set_parity(serialport::Parity::None).unwrap();
-            serial.set_stop_bits(serialport::StopBits::One).unwrap();
-            Ok(serial)
-        }
+        1 => Ka3005p::new(&serial_devices[0].port_name),
         _ => Err(anyhow::anyhow!("Multiple Power Supplies Found!")),
     }
 }
@@ -181,56 +206,78 @@ impl std::convert::From<Command> for String {
     }
 }
 
-pub fn execute(serial: &mut dyn serialport::SerialPort, command: Command) -> anyhow::Result<()> {
-    run_command(serial, &String::from(command))?;
-    Ok(())
+pub struct Ka3005p {
+    serial: Box<dyn serialport::SerialPort>,
 }
 
-/// Retrieve status information from the power supply
-pub fn status(serial: &mut dyn serialport::SerialPort) -> anyhow::Result<Status> {
-    let flags = Flags::new(run_command_response(serial, "STATUS?")?[0]);
-    let voltage = f32::from_str(
-        String::from_utf8_lossy(&run_command_response(serial, "VOUT1?")?)
-            .into_owned()
-            .as_str(),
-    )?;
-    let current = f32::from_str(
-        String::from_utf8_lossy(&run_command_response(serial, "IOUT1?")?)
-            .into_owned()
-            .as_str(),
-    )?;
-    Ok(Status::new(flags, voltage, current))
-}
+impl Ka3005p {
+    pub fn new(port_name: &String) -> anyhow::Result<Self> {
+        let serial = serialport::new(port_name.clone(), 9600)
+            .timeout(time::Duration::from_millis(50))
+            .parity(serialport::Parity::None)
+            .stop_bits(serialport::StopBits::One)
+            .open()?;
 
-fn run_command_response(serial: &mut dyn serialport::SerialPort, command: &str)  -> anyhow::Result<Vec<u8>> {
-    let res = run_command(serial, command)?;
-    anyhow::ensure!(!res.is_empty(), "PSU did not respond with data");
-    Ok(res)
-}
-
-fn run_command(serial: &mut dyn serialport::SerialPort, command: &str) -> anyhow::Result<Vec<u8>> {
-    let bytes = command.as_bytes();
-    if !serial.write(bytes)? == bytes.len() {
-        return Err(anyhow::anyhow!("Could not write command"));
+        Ok(Ka3005p { serial })
     }
-    serial.flush()?;
-    let mut result: Vec<u8> = Vec::new();
-    let mut is_done = false;
-    while !is_done {
-        let mut serial_buf: Vec<u8> = vec![0; 512];
-        match serial.read(serial_buf.as_mut_slice()) {
-            Ok(count) => {
-                result.extend(serial_buf.drain(..count));
-            }
-            Err(ref e) if e.kind() == io::ErrorKind::TimedOut => {
-                is_done = true;
-            }
-            Err(e) => {
-                return Err(e).with_context(|| "could not retrieve response from power supply")
-            }
-        };
+
+    /// If the user wishes to setup the serial port themselves
+    pub fn new_from_serial(serial: Box<dyn serialport::SerialPort>) -> anyhow::Result<Self> {
+        Ok(Ka3005p { serial })
     }
-    Ok(result)
+
+    pub fn execute(&mut self, command: Command) -> anyhow::Result<()> {
+        self.run_command(&String::from(command))?;
+        Ok(())
+    }
+
+    /// Retrieve status information from the power supply
+    pub fn status(&mut self) -> anyhow::Result<Status> {
+        let flags = self.run_command_response("STATUS?")?;
+        let flags = Flags::new(flags[0]);
+        let voltage = f32::from_str(
+            String::from_utf8_lossy(&self.run_command_response("VOUT1?")?.as_ref())
+                .into_owned()
+                .as_str(),
+        )?;
+        let current = f32::from_str(
+            String::from_utf8_lossy(&self.run_command_response("IOUT1?")?.as_ref())
+                .into_owned()
+                .as_str(),
+        )?;
+        Ok(Status::new(flags, voltage, current))
+    }
+
+    fn run_command_response(&mut self, command: &str) -> anyhow::Result<Vec<u8>> {
+        let res = self.run_command(command)?;
+        anyhow::ensure!(!res.is_empty(), "PSU did not respond with data");
+        Ok(res)
+    }
+
+    fn run_command(&mut self, command: &str) -> anyhow::Result<Vec<u8>> {
+        let bytes = command.as_bytes();
+        if !self.serial.write(bytes)? == bytes.len() {
+            return Err(anyhow::anyhow!("Could not write command"));
+        }
+        self.serial.flush()?;
+        let mut result: Vec<u8> = Vec::new();
+        let mut is_done = false;
+        while !is_done {
+            let mut serial_buf: Vec<u8> = vec![0; 512];
+            match self.serial.read(serial_buf.as_mut_slice()) {
+                Ok(count) => {
+                    result.extend(serial_buf.drain(..count));
+                }
+                Err(ref e) if e.kind() == io::ErrorKind::TimedOut => {
+                    is_done = true;
+                }
+                Err(e) => {
+                    return Err(e).with_context(|| "could not retrieve response from power supply")
+                }
+            };
+        }
+        Ok(result)
+    }
 }
 
 #[cfg(test)]
