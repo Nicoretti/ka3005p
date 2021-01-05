@@ -102,7 +102,7 @@ impl fmt::Display for Status {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "Voltage: {}, Current: {}, Channel1: {:?}, Channel2: {:?} Lock: {:?}, Beep: {:?}, Output: {:?}",
+            "Voltage: {:.2}, Current: {:.3}, Channel1: {:?}, Channel2: {:?} Lock: {:?}, Beep: {:?}, Output: {:?}",
             self.voltage,
             self.current,
             self.flags.channel1,
@@ -200,7 +200,7 @@ impl std::convert::From<Command> for String {
             },
             Command::Save(id) => format!("SAV{}", id),
             Command::Load(id) => format!("RCL{}", id),
-            Command::Voltage(v) => format!("VSET1:{:.3}", v),
+            Command::Voltage(v) => format!("VSET1:{:.2}", v),
             Command::Current(i) => format!("ISET1:{:.3}", i),
         }
     }
