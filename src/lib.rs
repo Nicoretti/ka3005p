@@ -313,4 +313,46 @@ mod tests {
         assert_eq!(Switch::Off, Flags::new(0).output);
         assert_eq!(Switch::On, Flags::new(64).output);
     }
+
+    #[test]
+    fn test_output_vset() {
+        // PSU is picky on the number of decimal places.
+        assert_eq!(
+            String::from(Command::Voltage(3.123)),
+            "VSET1:3.12".to_string()
+        );
+        assert_eq!(
+            String::from(Command::Voltage(1.500)),
+            "VSET1:1.50".to_string()
+        );
+        assert_eq!(
+            String::from(Command::Voltage(4.999)),
+            "VSET1:5.00".to_string()
+        );
+        assert_eq!(
+            String::from(Command::Voltage(4.0)),
+            "VSET1:4.00".to_string()
+        );
+    }
+
+    #[test]
+    fn test_output_iset() {
+        // PSU is picky on the number of decimal places.
+        assert_eq!(
+            String::from(Command::Current(3.123)),
+            "ISET1:3.123".to_string()
+        );
+        assert_eq!(
+            String::from(Command::Current(1.500)),
+            "ISET1:1.500".to_string()
+        );
+        assert_eq!(
+            String::from(Command::Current(4.99999)),
+            "ISET1:5.000".to_string()
+        );
+        assert_eq!(
+            String::from(Command::Current(4.0)),
+            "ISET1:4.000".to_string()
+        );
+    }
 }
