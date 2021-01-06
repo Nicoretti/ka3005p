@@ -25,7 +25,7 @@ SUBCOMMANDS:
     ocp        Enbale/Disable over current protection
     ovp        Enbale/Disable over voltage protection
     power      Turns on or off the ouput of the power supply
-    save       Saves current pannel settingts to specified config
+    save       Saves current pannel settings to specified config
     status     Return status inforation about the power spply
     voltage    Set the voltage of the ouput or config
 ```
