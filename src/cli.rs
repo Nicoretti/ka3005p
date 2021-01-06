@@ -19,7 +19,7 @@ pub enum Command {
         #[structopt(help = "ampere")]
         a: f32,
     },
-    /// Saves current pannel settingts to specified config
+    /// Saves current pannel settings to specified config
     Save {
         #[structopt(help = "1,2,3,4")]
         id: u32,
