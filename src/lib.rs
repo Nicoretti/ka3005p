@@ -213,7 +213,7 @@ pub struct Ka3005p {
 impl Ka3005p {
     pub fn new(port_name: &str) -> anyhow::Result<Self> {
         let serial = serialport::new(port_name, 9600)
-            .timeout(time::Duration::from_millis(50))
+            .timeout(time::Duration::from_millis(60))
             .parity(serialport::Parity::None)
             .stop_bits(serialport::StopBits::One)
             .open()?;
