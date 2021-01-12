@@ -1,10 +1,10 @@
 name: Rust
 
-on:
+on: 
   push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+  release:
+    types: [published]
 
 env:
   CARGO_TERM_COLOR: always
@@ -13,14 +13,66 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [x86_64-pc-windows-gnu, x86_64-unknown-linux-musl, arm-unknown-linux-musleabihf]
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install system dependencies
-      run: sudo apt-get install pkg-config libudev-dev
-    - name: Build
-      run: cargo build --all-targets --verbose
-    - name: Run tests
-      run: cargo test --verbose
-    - name: Lint 
-      run: cargo clippy
+
+    - name: Build Binary
+      uses: actions-rs/cargo@v1
+      with:
+          use-cross: true
+          command: build
+          args: --target ${{ matrix.os }} --release
+
+    - name: Save Artifact
+      uses: actions/upload-artifact@v2
+      if: matrix.os != 'x86_64-pc-windows-gnu'
+      with:
+        name: ka3005p-${{ matrix.os }}
+        path: target/${{ matrix.os }}/release/ka3005p
+        
+    - name: Save Windows Artifact
+      uses: actions/upload-artifact@v2
+      if: matrix.os == 'x86_64-pc-windows-gnu'
+      with:
+        name: ka3005p-${{ matrix.os }}.exe
+        path: target/${{ matrix.os }}/release/ka3005p.exe
+
+    - name: Upload binary
+      if: github.event_name == 'release' && matrix.os != 'x86_64-pc-windows-gnu'
+      uses: actions/upload-release-asset@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          asset_name: ka3005p-${{ matrix.os }}
+          asset_path: target/${{ matrix.os }}/release/ka3005p
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_content_type: application/octet-stream
+    - name: Upload Windows binary
+      if: github.event_name == 'release' && matrix.os == 'x86_64-pc-windows-gnu'
+      uses: actions/upload-release-asset@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          asset_name: ka3005p-${{ matrix.os }}.exe
+          asset_path: target/${{ matrix.os }}/release/ka3005p.exe
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_content_type: application/octet-stream
+
+    - name: Lint
+      uses: actions-rs/clippy-check@v1
+      with:
+          use-cross: true
+          name: clippy-${{ matrix.os }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-features --target ${{ matrix.os }}
+          
+    - name: Tests
+      uses: actions-rs/cargo@v1
+      with:
+          use-cross: true
+          command: test
+          args: --target ${{ matrix.os }} --verbose
