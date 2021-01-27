@@ -7,6 +7,7 @@ use std::str::FromStr;
 use std::time;
 
 pub mod cli;
+pub use serialport;
 
 #[derive(Debug, PartialEq, Copy, Clone)]
 pub enum Switch {
