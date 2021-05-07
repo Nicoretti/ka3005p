@@ -1,4 +1,3 @@
-use serialport;
 use std::io;
 use std::io::{Read, Write};
 use std::str;
@@ -6,7 +5,6 @@ use std::time;
 use structopt::StructOpt;
 
 mod cli {
-
     #[derive(Debug)]
     pub enum Switch {
         On,
@@ -51,8 +49,7 @@ fn run_command(serial: &mut Box<dyn serialport::SerialPort>, command: &str) -> S
             Err(e) => eprintln!("Error {:?}", e),
         }
     }
-
-    return result;
+    result
 }
 
 fn main() -> io::Result<()> {
@@ -72,7 +69,9 @@ fn main() -> io::Result<()> {
             std::process::exit(1);
         }
         1 => {
-            let mut serial = serialport::new(&serial_devices[0].port_name, 9600).open().unwrap();
+            let mut serial = serialport::new(&serial_devices[0].port_name, 9600)
+                .open()
+                .unwrap();
 
             serial.set_timeout(time::Duration::from_millis(50)).unwrap();
             serial.set_parity(serialport::Parity::None).unwrap();

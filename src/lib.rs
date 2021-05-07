@@ -78,8 +78,8 @@ pub enum Lock {
 
 #[derive(Debug, PartialEq)]
 pub enum Mode {
-    CC,
-    CV,
+    Cc,
+    Cv,
 }
 
 pub struct Status {
@@ -128,14 +128,14 @@ impl Status {
 impl Flags {
     pub fn new(flags: u8) -> Self {
         let channel1 = if flags & 0x01 != 0 {
-            Mode::CV
+            Mode::Cv
         } else {
-            Mode::CC
+            Mode::Cc
         };
         let channel2 = if flags & 0x02 != 0 {
-            Mode::CV
+            Mode::Cv
         } else {
-            Mode::CC
+            Mode::Cc
         };
         let beep = if flags & 0x10 != 0 {
             Switch::On
@@ -287,14 +287,14 @@ mod tests {
 
     #[test]
     fn test_channel1_status() {
-        assert_eq!(Mode::CC, Flags::new(0).channel1);
-        assert_eq!(Mode::CV, Flags::new(1).channel1);
+        assert_eq!(Mode::Cc, Flags::new(0).channel1);
+        assert_eq!(Mode::Cv, Flags::new(1).channel1);
     }
 
     #[test]
     fn test_channel2_status() {
-        assert_eq!(Mode::CC, Flags::new(0).channel2);
-        assert_eq!(Mode::CV, Flags::new(2).channel2);
+        assert_eq!(Mode::Cc, Flags::new(0).channel2);
+        assert_eq!(Mode::Cv, Flags::new(2).channel2);
     }
 
     #[test]
