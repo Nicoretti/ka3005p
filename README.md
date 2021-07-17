@@ -7,25 +7,29 @@ Command line tool to control a KA3005P bench power supply through its serial int
 
 Example (Getting Help):
 ```
-user@host ~$ ka3005p -h
-ka3005p 0.1.2
+$ ka3005p -h
+ka3005p 0.2.2
 Controls a KA3005P bench power supply through its serial interface
 
 USAGE:
-    ka3005p <SUBCOMMAND>
+    ka3005p [OPTIONS] <SUBCOMMAND>
 
 FLAGS:
     -h, --help       Prints help information
     -V, --version    Prints version information
 
+OPTIONS:
+    -d, --device <device>    Manually select power supply serial device
+
 SUBCOMMANDS:
-    beep           Enbale/Disable Beep
+    beep           Enable/Disable Beep
     current        Set the current of the ouput or config
     help           Prints this message or the help of the given subcommand(s)
     interactive    Read commands from stdin and execute them
+    list           list possible power supply devices
     load           Loads config settings of specified no
-    ocp            Enbale/Disable over current protection
-    ovp            Enbale/Disable over voltage protection
+    ocp            Enable/Disable over current protection
+    ovp            Enable/Disable over voltage protection
     power          Turns on or off the ouput of the power supply
     save           Saves current pannel settings to specified config
     status         Return status inforation about the power spply
@@ -34,7 +38,7 @@ SUBCOMMANDS:
 
 ```
 user@host ~$ ka30005p help power
-ka3005p-power 0.1.0
+ka3005p-power 0.2.2
 Turns on or off the ouput of the power supply
 
 USAGE:
@@ -46,6 +50,7 @@ FLAGS:
 
 ARGS:
     <switch>    on/off
+
 ```
 
 ## Do automated ramps using the interactive mode

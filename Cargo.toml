@@ -1,6 +1,6 @@
 [package]
 name = "ka3005p"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Nicola Coretti <nico.coretti@gmail.com>", "Daniel Hartig <daniel-hartig@gmx.de>", "Jack <Jack.Newman12@gmail.com>"]
 edition = "2018"
 autobins = false
