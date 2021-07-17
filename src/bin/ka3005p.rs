@@ -45,7 +45,6 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
                 serial.execute(
                     arguments
                         .command
-                        .clone()
                         .try_into()
                         .with_context(|| "unsupported command conversion")?,
                 )?;
@@ -54,7 +53,6 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
         _ => {
             serial.execute(
                 args.command
-                    .clone()
                     .try_into()
                     .with_context(|| "unsupported command conversion")?,
             )?;

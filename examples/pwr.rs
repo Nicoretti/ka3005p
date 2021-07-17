@@ -33,7 +33,7 @@ mod cli {
 }
 
 fn run_command(serial: &mut Box<dyn serialport::SerialPort>, command: &str) -> String {
-    serial.write(command.as_bytes()).unwrap();
+    serial.write_all(command.as_bytes()).unwrap();
     serial.flush().unwrap();
     let mut result: String = String::from("");
     loop {
@@ -41,7 +41,7 @@ fn run_command(serial: &mut Box<dyn serialport::SerialPort>, command: &str) -> S
         let r = serial.read(serial_buf.as_mut_slice());
         match r {
             Ok(t) => {
-                result.push_str(&str::from_utf8(&serial_buf.as_slice()[..t]).unwrap());
+                result.push_str(str::from_utf8(&serial_buf.as_slice()[..t]).unwrap());
             }
             Err(ref e) if e.kind() == io::ErrorKind::TimedOut => {
                 break;
