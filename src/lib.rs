@@ -172,7 +172,7 @@ pub fn list_serial_ports() ->  Vec<serialport::SerialPortInfo> {
             _ => false,
         })
         .collect();
-        return serial_devices;
+        serial_devices
 }
 
 pub fn find_serial_port() -> anyhow::Result<Ka3005p> {
@@ -242,12 +242,12 @@ impl Ka3005p {
         let flags = self.run_command_response("STATUS?")?;
         let flags = Flags::new(flags[0]);
         let voltage = f32::from_str(
-            String::from_utf8_lossy(&self.run_command_response("VOUT1?")?.as_ref())
+            String::from_utf8_lossy(self.run_command_response("VOUT1?")?.as_ref())
                 .into_owned()
                 .as_str(),
         )?;
         let current = f32::from_str(
-            String::from_utf8_lossy(&self.run_command_response("IOUT1?")?.as_ref())
+            String::from_utf8_lossy(self.run_command_response("IOUT1?")?.as_ref())
                 .into_owned()
                 .as_str(),
         )?;
