@@ -29,20 +29,26 @@ pub enum Command {
         #[structopt(help = "1,2,3,4")]
         id: u32,
     },
-    /// Enbale/Disable over current protection
+    /// Enable/Disable over current protection
     Ocp {
         #[structopt(help = "on/off")]
         switch: crate::Switch,
     },
-    /// Enbale/Disable over voltage protection
+    /// Enable/Disable over voltage protection
     Ovp {
         #[structopt(help = "on/off")]
         switch: crate::Switch,
     },
-    /// Enbale/Disable Beep
+    /// Enable/Disable Beep
     Beep {
         #[structopt(help = "on/off")]
         switch: crate::Switch,
+    },
+    /// list possible power supply devices
+    List {
+        /// List all serial ports, not just ones that match the USB ids
+        #[structopt(short, long)]
+        verbose: bool,
     },
     /// Read commands from stdin and execute them
     Interactive,
@@ -71,4 +77,7 @@ impl std::convert::TryInto<crate::Command> for Command {
 pub struct Ka3005p {
     #[structopt(subcommand)]
     pub command: Command,
+    /// Manually select power supply serial device
+    #[structopt(short, long)]
+    pub device: Option<String>,
 }

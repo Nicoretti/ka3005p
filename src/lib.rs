@@ -163,7 +163,7 @@ impl Flags {
     }
 }
 
-pub fn find_serial_port() -> anyhow::Result<Ka3005p> {
+pub fn list_serial_ports() ->  Vec<serialport::SerialPortInfo> {
     let serial_devices: Vec<serialport::SerialPortInfo> = serialport::available_ports()
         .unwrap()
         .into_iter()
@@ -172,6 +172,11 @@ pub fn find_serial_port() -> anyhow::Result<Ka3005p> {
             _ => false,
         })
         .collect();
+        return serial_devices;
+}
+
+pub fn find_serial_port() -> anyhow::Result<Ka3005p> {
+    let serial_devices = list_serial_ports();
 
     match serial_devices.len() {
         0 => Err(anyhow::anyhow!("No Power Supply Found!")),
