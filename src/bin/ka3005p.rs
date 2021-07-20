@@ -19,7 +19,7 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
             devices = ka3005p::list_serial_ports();
         }
 
-        println!("{:?}", devices);
+        println!("{:#?}", devices);
         exit(0);
     }
 
