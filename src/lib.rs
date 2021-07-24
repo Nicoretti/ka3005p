@@ -163,7 +163,7 @@ impl Flags {
     }
 }
 
-pub fn list_serial_ports() ->  Vec<serialport::SerialPortInfo> {
+pub fn list_serial_ports() -> Vec<serialport::SerialPortInfo> {
     let serial_devices: Vec<serialport::SerialPortInfo> = serialport::available_ports()
         .unwrap()
         .into_iter()
@@ -172,7 +172,7 @@ pub fn list_serial_ports() ->  Vec<serialport::SerialPortInfo> {
             _ => false,
         })
         .collect();
-        serial_devices
+    serial_devices
 }
 
 pub fn find_serial_port() -> anyhow::Result<Ka3005p> {
