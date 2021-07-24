@@ -1,4 +1,34 @@
+//! This library helps connect to common power lab bench supplies from Tenma, Farnell, Stamos, Korad, Velleman, RS and various other clones.
+
+//! A quick example of using the library:
+//! ```no_run
+//! use ka3005p::{Ka3005p, Command, Switch};
+//!
+//! // There is a helper function to automatically find the power supply
+//! let mut dev = ka3005p::find_serial_port().unwrap();
+//! // or if you wish to target a particular serial power
+//! let mut dev = Ka3005p::new("dev/ttyS0").unwrap();
+//!
+//! println!("{}", dev.status().unwrap());
+//! // "Voltage: 12.00, Current: 0.305, Channel1: CV, Channel2: CV, Lock: Off, Beep: On, Output: On"
+//!
+//! // Switching the power supply off
+//! dev.execute(Command::Power(Switch::Off)).unwrap();
+//! // Setting the voltage to 12.1v
+//! dev.execute(Command::Voltage(12.1)).unwrap();
+//! ```
+
+//! You can also use the accompanying command line utility:
+//! ```text
+//! > ka3005p status
+//! Voltage: 12.00, Current: 0.305, Channel1: CV, Channel2: CV, Lock: Off, Beep: On, Output: On
+//! > ka3005p power off
+//! Voltage: 12.00, Current: 0.305, Channel1: CV, Channel2: CV, Lock: Off, Beep: On, Output: Off
+//! > ka3005p voltage 12.1
+//! ```
+
 #![deny(warnings)]
+#![warn(missing_docs)]
 use anyhow::Context;
 use std::fmt;
 use std::io;
@@ -6,12 +36,16 @@ use std::str;
 use std::str::FromStr;
 use std::time;
 
+#[doc(hidden)] // Users of the library shouldn't use this
 pub mod cli;
 pub use serialport;
 
+/// On / Off
 #[derive(Debug, PartialEq, Copy, Clone)]
 pub enum Switch {
+    /// Enable the feature/output
     On,
+    /// Disable the feature/output
     Off,
 }
 
@@ -34,6 +68,7 @@ impl std::convert::From<bool> for Switch {
     }
 }
 
+/// Commands supported by the power supply.
 #[derive(Debug)]
 pub enum Command {
     /// Enable/Disable Power
@@ -44,47 +79,69 @@ pub enum Command {
     Ovp(Switch),
     /// Enable/Disable over current protection
     Ocp(Switch),
-    /// Store current pannel settings to memory
+    /// Store current settings to memory. Supports 1 to 5
     Save(u32),
-    /// Load stored setting into pannel
+    /// Load stored setting. Note will disable power supply output on load.
     Load(u32),
-    /// Sets the voltage
+    /// Sets the voltage. Units in Volts
     Voltage(f32),
-    /// Sets the current
+    /// Sets the current. Units in Amps
     Current(f32),
 }
 
+/// Structure containing all the information fields from the power supply
 #[derive(Debug, PartialEq)]
 pub struct Flags {
+    /// The raw byte
     flags: u8,
+    /// Channel 1. CV or CC mode
     pub channel1: Mode,
+    /// Channel 2. CV or CC mode
     pub channel2: Mode,
+    /// Interface beep enabled or disabled.
     pub beep: Switch,
+    /// Interface locked. Will ignore button presses but not serial commands.
     pub lock: Lock,
+    /// Output enabled / disabled
     pub output: Switch,
+    // TODO - Some people seem to have read the OCP OVP flags in here.
+    // I can't find it in any manuals but it might be trying to figure this out
 }
 
+/// Channel One / Two
 #[derive(Debug, PartialEq)]
 pub enum Channel {
+    /// Channel One of the power supply
     One,
+    /// Channel Two of the power supply (if your device has one)
     Two,
 }
 
+/// Locked / Unlocked
 #[derive(Debug, PartialEq)]
 pub enum Lock {
+    /// Device is currently locked. Ignores physical buttons but will still respond to serial commands
     Locked,
+    /// Device is currently unlocked.
     Unlocked,
 }
 
+/// CC or CV mode
 #[derive(Debug, PartialEq)]
 pub enum Mode {
+    /// Power supply is in Constant Current mode
     Cc,
+    /// Power supply is in Constant Voltage mode
     Cv,
 }
 
+/// Contains the current Voltage, Current and Flags of the power supply
 pub struct Status {
+    /// Flags as reported by the power supply
     pub flags: Flags,
+    /// Voltage in volts
     pub voltage: f32,
+    /// Current in amps
     pub current: f32,
 }
 
@@ -116,7 +173,7 @@ impl fmt::Display for Status {
 }
 
 impl Status {
-    pub fn new(flags: Flags, voltage: f32, current: f32) -> Self {
+    fn new(flags: Flags, voltage: f32, current: f32) -> Self {
         Status {
             flags,
             voltage,
@@ -126,7 +183,7 @@ impl Status {
 }
 
 impl Flags {
-    pub fn new(flags: u8) -> Self {
+    fn new(flags: u8) -> Self {
         let channel1 = if flags & 0x01 != 0 {
             Mode::Cv
         } else {
@@ -163,6 +220,7 @@ impl Flags {
     }
 }
 
+/// A helper function to list all of the detected power supplies.
 pub fn list_serial_ports() -> Vec<serialport::SerialPortInfo> {
     let serial_devices: Vec<serialport::SerialPortInfo> = serialport::available_ports()
         .unwrap()
@@ -175,6 +233,7 @@ pub fn list_serial_ports() -> Vec<serialport::SerialPortInfo> {
     serial_devices
 }
 
+/// Helper function that automatically finds and connects to a power supply.
 pub fn find_serial_port() -> anyhow::Result<Ka3005p> {
     let serial_devices = list_serial_ports();
 
@@ -212,11 +271,13 @@ impl std::convert::From<Command> for String {
     }
 }
 
+/// The power supply. The main object of the library.
 pub struct Ka3005p {
     serial: Box<dyn serialport::SerialPort>,
 }
 
 impl Ka3005p {
+    /// Create a power supply object from a serial port address.
     pub fn new(port_name: &str) -> anyhow::Result<Self> {
         let serial = serialport::new(port_name, 9600)
             .timeout(time::Duration::from_millis(60))
@@ -227,17 +288,22 @@ impl Ka3005p {
         Ok(Ka3005p { serial })
     }
 
-    /// If the user wishes to setup the serial port themselves
+    /// A convenience function to use if your power supply happens to be picky with the settings.
+    /// Note the library defaults have fairly large margins so this should be unnecessary.
     pub fn new_from_serial(serial: Box<dyn serialport::SerialPort>) -> anyhow::Result<Self> {
         Ok(Ka3005p { serial })
     }
 
+    /// Execute a command on the power supply.
+    /// Note that these supplies do not return anything on a command so the result only indicates if the serial transfer was successful.
+    /// You will need to check that status to make sure the power supply is now in the state you expect.
     pub fn execute(&mut self, command: Command) -> anyhow::Result<()> {
         self.run_command(&String::from(command))?;
         Ok(())
     }
 
     /// Retrieve status information from the power supply
+    /// Returns a struct containing all the information about the power supply
     pub fn status(&mut self) -> anyhow::Result<Status> {
         let flags = self.run_command_response("STATUS?")?;
         let flags = Flags::new(flags[0]);
