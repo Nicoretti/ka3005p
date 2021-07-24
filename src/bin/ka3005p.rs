@@ -9,7 +9,7 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
     human_panic::setup_panic!();
     let args = ka3005p::cli::Ka3005p::from_args();
 
-    if let ka3005p::cli::Command::List{verbose} = args.command {
+    if let ka3005p::cli::Command::List { verbose } = args.command {
         let devices;
         if verbose {
             // Verbose. List everything

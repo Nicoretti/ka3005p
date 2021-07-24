@@ -11,68 +11,117 @@ env:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
-        os: [x86_64-pc-windows-gnu, x86_64-unknown-linux-musl, arm-unknown-linux-musleabihf]
+        os: [x86_64-unknown-linux-musl, arm-unknown-linux-musleabihf]
+        runs-on: [ubuntu-latest]
+        cross: [true]
+        include:
+          - os: x86_64-apple-darwin
+            runs-on: macos-latest # Apple needs to be compiled on an apple os
+            cross: false # Cross fails on these platforms
+          - os: x86_64-pc-windows-gnu
+            runs-on: windows-latest # Not needed, but why not?
+            suffix: .exe # Windows has an .exe suffix
+            cross: false # Cross fails on these platforms
 
     steps:
     - uses: actions/checkout@v2
 
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+        profile: minimal
+        target: ${{ matrix.os }}
+        
     - name: Build Binary
       uses: actions-rs/cargo@v1
       with:
-          use-cross: true
+          use-cross: ${{ matrix.cross }}
           command: build
           args: --target ${{ matrix.os }} --release
 
     - name: Save Artifact
       uses: actions/upload-artifact@v2
-      if: matrix.os != 'x86_64-pc-windows-gnu'
       with:
-        name: ka3005p-${{ matrix.os }}
-        path: target/${{ matrix.os }}/release/ka3005p
-        
-    - name: Save Windows Artifact
-      uses: actions/upload-artifact@v2
-      if: matrix.os == 'x86_64-pc-windows-gnu'
-      with:
-        name: ka3005p-${{ matrix.os }}.exe
-        path: target/${{ matrix.os }}/release/ka3005p.exe
+        name: ka3005p-${{ matrix.os }}${{ matrix.suffix }}
+        path: target/${{ matrix.os }}/release/ka3005p${{ matrix.suffix }}
 
-    - name: Upload binary
-      if: github.event_name == 'release' && matrix.os != 'x86_64-pc-windows-gnu'
+    - name: Upload Binary
+      if: github.event_name == 'release'
       uses: actions/upload-release-asset@v1
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-          asset_name: ka3005p-${{ matrix.os }}
-          asset_path: target/${{ matrix.os }}/release/ka3005p
+          asset_name: ka3005p-${{ matrix.os }}${{ matrix.suffix }}
+          asset_path: target/${{ matrix.os }}/release/ka3005p${{ matrix.suffix }}
           upload_url: ${{ github.event.release.upload_url }}
           asset_content_type: application/octet-stream
-    - name: Upload Windows binary
-      if: github.event_name == 'release' && matrix.os == 'x86_64-pc-windows-gnu'
-      uses: actions/upload-release-asset@v1
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-          asset_name: ka3005p-${{ matrix.os }}.exe
-          asset_path: target/${{ matrix.os }}/release/ka3005p.exe
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_content_type: application/octet-stream
-
-    - name: Lint
-      uses: actions-rs/clippy-check@v1
-      with:
-          use-cross: true
-          name: clippy-${{ matrix.os }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-features --target ${{ matrix.os }}
           
     - name: Tests
       uses: actions-rs/cargo@v1
       with:
-          use-cross: true
+          use-cross: ${{ matrix.cross }}
           command: test
           args: --target ${{ matrix.os }} --verbose
+
+  clippy_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+          components: clippy
+          target: x86_64-unknown-linux-musl
+      - uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-features --target x86_64-unknown-linux-musl
+
+  rustfmt:
+    name: rustfmt
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+        profile: minimal
+        components: rustfmt
+    - name: Check formatting
+      run: |
+        cargo fmt --all -- --check 
+      
+  rustdoc:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Rust toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        profile: minimal
+        override: true
+        target: x86_64-unknown-linux-musl
+        components: rustfmt, rust-src
+
+    - name: Build Documentation
+      run: cargo doc --all --no-deps  --target x86_64-unknown-linux-musl
+
+    - name: Deploy Docs
+      uses: peaceiris/actions-gh-pages@v3
+      if: ${{ github.ref == 'refs/heads/master' }}
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./target/doc
