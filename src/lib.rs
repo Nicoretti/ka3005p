@@ -33,7 +33,6 @@ use anyhow::Context;
 use std::fmt;
 use std::io;
 use std::str;
-use std::str::FromStr;
 use std::time;
 
 #[doc(hidden)] // Users of the library shouldn't use this
@@ -143,6 +142,10 @@ pub struct Status {
     pub voltage: f32,
     /// Current in amps
     pub current: f32,
+    /// Target Voltage in volts
+    pub set_voltage: f32,
+    /// Current Limit in amps
+    pub set_current: f32,
 }
 
 impl std::str::FromStr for Switch {
@@ -160,9 +163,11 @@ impl fmt::Display for Status {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "Voltage: {:.2}, Current: {:.3}, Channel1: {:?}, Channel2: {:?} Lock: {:?}, Beep: {:?}, Output: {:?}",
+            "Voltage: {:5.2} ({:5.2}), Current: {:5.3} ({:5.3}), CH1: {:?}, CH2: {:?} Lock: {:?}, Beep: {:?}, Output: {:?}",
             self.voltage,
+            self.set_voltage,
             self.current,
+            self.set_current,
             self.flags.channel1,
             self.flags.channel2,
             self.flags.lock,
@@ -172,16 +177,11 @@ impl fmt::Display for Status {
     }
 }
 
-impl Status {
-    fn new(flags: Flags, voltage: f32, current: f32) -> Self {
-        Status {
-            flags,
-            voltage,
-            current,
-        }
+impl From<u8> for Flags {
+    fn from(flags: u8) -> Self {
+        Flags::new(flags)
     }
 }
-
 impl Flags {
     fn new(flags: u8) -> Self {
         let channel1 = if flags & 0x01 != 0 {
@@ -304,19 +304,18 @@ impl Ka3005p {
     /// Retrieve status information from the power supply
     /// Returns a struct containing all the information about the power supply
     pub fn status(&mut self) -> anyhow::Result<Status> {
-        let flags = self.run_command_response("STATUS?")?;
-        let flags = Flags::new(flags[0]);
-        let voltage = f32::from_str(
-            String::from_utf8_lossy(self.run_command_response("VOUT1?")?.as_ref())
-                .into_owned()
-                .as_str(),
-        )?;
-        let current = f32::from_str(
-            String::from_utf8_lossy(self.run_command_response("IOUT1?")?.as_ref())
-                .into_owned()
-                .as_str(),
-        )?;
-        Ok(Status::new(flags, voltage, current))
+        let flags: Flags = self.run_command_response("STATUS?")?[0].into();
+        let voltage = String::from_utf8_lossy(&self.run_command_response("VOUT1?")?).parse()?;
+        let current = String::from_utf8_lossy(&self.run_command_response("IOUT1?")?).parse()?;
+        let set_voltage = String::from_utf8_lossy(&self.run_command_response("VSET1?")?).parse()?;
+        let set_current = String::from_utf8_lossy(&self.run_command_response("ISET1?")?).parse()?;
+        Ok(Status {
+            flags,
+            voltage,
+            current,
+            set_voltage,
+            set_current,
+        })
     }
 
     fn run_command_response(&mut self, command: &str) -> anyhow::Result<Vec<u8>> {
