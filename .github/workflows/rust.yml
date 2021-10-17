@@ -18,17 +18,14 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
-        os: [x86_64-unknown-linux-musl, arm-unknown-linux-musleabihf]
+        os: [x86_64-unknown-linux-musl, arm-unknown-linux-musleabihf, x86_64-unknown-linux-gnu] # arm-unknown-linux-gnueabihf
         runs-on: [ubuntu-latest]
-        cross: [true]
         include:
           - os: x86_64-apple-darwin
             runs-on: macos-latest # Apple needs to be compiled on an apple os
-            cross: false # Cross fails on these platforms
           - os: x86_64-pc-windows-gnu
-            runs-on: windows-latest # Not needed, but why not?
+            runs-on: windows-latest 
             suffix: .exe # Windows has an .exe suffix
-            cross: false # Cross fails on these platforms
 
     steps:
     - uses: actions/checkout@v2
@@ -40,11 +37,15 @@ jobs:
         override: true
         profile: minimal
         target: ${{ matrix.os }}
+    
+    - name: Install Deps
+      if: contains(matrix.os, 'linux') && contains(matrix.os, 'gnu')
+      run: sudo apt update && sudo apt install libudev-dev -y
         
     - name: Build Binary
       uses: actions-rs/cargo@v1
       with:
-          use-cross: ${{ matrix.cross }}
+          use-cross: ${{ contains(matrix.os, 'arm') }}
           command: build
           args: --target ${{ matrix.os }} --release
 
@@ -66,9 +67,9 @@ jobs:
           asset_content_type: application/octet-stream
           
     - name: Tests
+      if: contains(matrix.os, 'x86_64')
       uses: actions-rs/cargo@v1
       with:
-          use-cross: ${{ matrix.cross }}
           command: test
           args: --target ${{ matrix.os }} --verbose
 
