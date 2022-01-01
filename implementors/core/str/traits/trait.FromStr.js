@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["ka3005p"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.57.0/core/str/traits/trait.FromStr.html\" title=\"trait core::str::traits::FromStr\">FromStr</a> for <a class=\"enum\" href=\"ka3005p/enum.Switch.html\" title=\"enum ka3005p::Switch\">Switch</a>","synthetic":false,"types":["ka3005p::Switch"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
