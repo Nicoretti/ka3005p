@@ -16,7 +16,7 @@ categories = ["command-line-utilities"]
 
 [dependencies]
 serialport = "4.0.1"
-structopt = "0.3.25"
+structopt = "0.3.26"
 human-panic = "1.0.3"
 anyhow = "1.0.52"
 
