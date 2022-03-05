@@ -10,27 +10,25 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
     let args = ka3005p::cli::Ka3005p::from_args();
 
     if let ka3005p::cli::Command::List { verbose } = args.command {
-        let devices;
-        if verbose {
+        let devices = if verbose {
             // Verbose. List everything
-            devices = serialport::available_ports()?;
+            serialport::available_ports()?
         } else {
             // Just print devices and then exit
-            devices = ka3005p::list_serial_ports();
-        }
+            ka3005p::list_serial_ports()
+        };
 
         println!("{:#?}", devices);
         exit(0);
     }
 
-    let mut serial;
-    if let Some(device) = args.device {
+    let mut serial = if let Some(device) = args.device {
         // User specified a device. Use that
-        serial = ka3005p::Ka3005p::new(&device)?;
+        ka3005p::Ka3005p::new(&device)?
     } else {
         // Otherwise find the device automatically
-        serial = ka3005p::find_serial_port()?;
-    }
+        ka3005p::find_serial_port()?
+    };
 
     match args.command {
         ka3005p::cli::Command::Status => {
