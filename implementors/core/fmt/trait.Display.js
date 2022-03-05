@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["ka3005p"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.57.0/core/fmt/trait.Display.html\" title=\"trait core::fmt::Display\">Display</a> for <a class=\"struct\" href=\"ka3005p/struct.Status.html\" title=\"struct ka3005p::Status\">Status</a>","synthetic":false,"types":["ka3005p::Status"]}];
+implementors["ka3005p"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.59.0/core/fmt/trait.Display.html\" title=\"trait core::fmt::Display\">Display</a> for <a class=\"struct\" href=\"ka3005p/struct.Status.html\" title=\"struct ka3005p::Status\">Status</a>","synthetic":false,"types":["ka3005p::Status"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
