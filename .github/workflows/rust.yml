@@ -1,8 +1,12 @@
 name: Rust
 
-on: 
+on:
   push:
+    branches-ignore:
+      - 'master'
   pull_request:
+    branches-ignore:
+      - 'master'
   release:
     types: [published]
 
