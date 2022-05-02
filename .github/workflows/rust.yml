@@ -49,7 +49,7 @@ jobs:
           args: --target ${{ matrix.os }} --release
 
     - name: Save Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ka3005p-${{ matrix.os }}${{ matrix.suffix }}
         path: target/${{ matrix.os }}/release/ka3005p${{ matrix.suffix }}
