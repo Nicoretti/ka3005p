@@ -18,7 +18,7 @@ categories = ["command-line-utilities"]
 serialport = "4.1.0"
 structopt = "0.3.26"
 human-panic = "1.0.3"
-anyhow = "1.0.57"
+anyhow = "1.0.63"
 
 [[bin]]
 name = "ka3005p"
