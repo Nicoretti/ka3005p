@@ -1,53 +1,55 @@
 use std::clone::Clone;
+use clap::{Parser, Subcommand};
 
-#[derive(structopt::StructOpt, Debug, Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Subcommand)]
 pub enum Command {
     /// Turns on or off the ouput of the power supply
     Power {
-        #[structopt(help = "on/off")]
+        /// on/off
+        #[clap(short, long)]
         switch: crate::Switch,
     },
     /// Return status inforation about the power spply
     Status,
     /// Set the voltage of the ouput or config
     Voltage {
-        #[structopt(help = "volts")]
+        #[clap(help = "volts")]
         v: f32,
     },
     /// Set the current of the ouput or config
     Current {
-        #[structopt(help = "ampere")]
+        #[clap(help = "ampere")]
         a: f32,
     },
     /// Saves current pannel settings to specified config
     Save {
-        #[structopt(help = "1,2,3,4")]
+        #[clap(help = "1,2,3,4")]
         id: u32,
     },
     /// Loads config settings of specified no.
     Load {
-        #[structopt(help = "1,2,3,4")]
+        #[clap(help = "1,2,3,4")]
         id: u32,
     },
     /// Enable/Disable over current protection
     Ocp {
-        #[structopt(help = "on/off")]
+        #[clap(help = "on/off")]
         switch: crate::Switch,
     },
     /// Enable/Disable over voltage protection
     Ovp {
-        #[structopt(help = "on/off")]
+        #[clap(help = "on/off")]
         switch: crate::Switch,
     },
     /// Enable/Disable Beep
     Beep {
-        #[structopt(help = "on/off")]
+        #[clap(help = "on/off")]
         switch: crate::Switch,
     },
     /// list possible power supply devices
     List {
         /// List all serial ports, not just ones that match the USB ids
-        #[structopt(short, long)]
+        #[clap(short, long)]
         verbose: bool,
     },
     /// Read commands from stdin and execute them
@@ -71,13 +73,13 @@ impl std::convert::TryInto<crate::Command> for Command {
     }
 }
 
-#[derive(structopt::StructOpt, Debug)]
-#[structopt(about = "Controls a KA3005P bench power supply through its serial interface")]
-#[structopt(global_settings(& [structopt::clap::AppSettings::ColoredHelp]))]
+#[derive(Parser)]
+#[clap(author, version, about, long_about = None)]
+#[clap(propagate_version = true)]
 pub struct Ka3005p {
-    #[structopt(subcommand)]
+    #[clap(subcommand)]
     pub command: Command,
     /// Manually select power supply serial device
-    #[structopt(short, long)]
+    #[clap(short, long)]
     pub device: Option<String>,
 }

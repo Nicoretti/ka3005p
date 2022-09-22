@@ -16,9 +16,9 @@ categories = ["command-line-utilities"]
 
 [dependencies]
 serialport = "4.1.0"
-structopt = "0.3.26"
 human-panic = "1.0.3"
 anyhow = "1.0.63"
+clap = { version = "3.2.22", features = ["derive"] }
 
 [[bin]]
 name = "ka3005p"
