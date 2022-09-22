@@ -41,7 +41,7 @@ pub mod cli;
 pub use serialport;
 
 /// On / Off
-#[derive(Debug, PartialEq, Copy, Clone)]
+#[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub enum Switch {
     /// Enable the feature/output
     On,
@@ -90,7 +90,7 @@ pub enum Command {
 }
 
 /// Structure containing all the information fields from the power supply
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Flags {
     /// The raw byte
     flags: u8,
@@ -109,7 +109,7 @@ pub struct Flags {
 }
 
 /// Channel One / Two
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Channel {
     /// Channel One of the power supply
     One,
@@ -118,7 +118,7 @@ pub enum Channel {
 }
 
 /// Locked / Unlocked
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Lock {
     /// Device is currently locked. Ignores physical buttons but will still respond to serial commands
     Locked,
@@ -127,7 +127,7 @@ pub enum Lock {
 }
 
 /// CC or CV mode
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Mode {
     /// Power supply is in Constant Current mode
     Cc,
