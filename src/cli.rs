@@ -1,5 +1,5 @@
-use std::clone::Clone;
 use clap::{Parser, Subcommand};
+use std::clone::Clone;
 
 #[derive(Copy, Clone, PartialEq, Subcommand)]
 pub enum Command {

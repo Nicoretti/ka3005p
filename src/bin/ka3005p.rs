@@ -1,9 +1,9 @@
 #![deny(warnings)]
 use anyhow::Context;
+use clap::Parser;
 use std::convert::TryInto;
 use std::io::BufRead;
 use std::process::exit;
-use clap::Parser;
 
 fn main() -> ::anyhow::Result<(), anyhow::Error> {
     human_panic::setup_panic!();
