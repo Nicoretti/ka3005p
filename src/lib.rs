@@ -239,8 +239,7 @@ pub fn find_serial_port() -> anyhow::Result<Ka3005p> {
 
     match serial_devices.len() {
         0 => Err(anyhow::anyhow!("No Power Supply Found!")),
-        1 => Ka3005p::new(&serial_devices[0].port_name),
-        _ => Err(anyhow::anyhow!("Multiple Power Supplies Found!")),
+        _ => Ka3005p::new(&serial_devices[0].port_name),
     }
 }
 
