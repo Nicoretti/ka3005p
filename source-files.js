@@ -1,3 +1,4 @@
-var N = null;var sourcesIndex = {};
-sourcesIndex["ka3005p"] = {"name":"","files":["cli.rs","lib.rs"]};
+var sourcesIndex = JSON.parse('{\
+"ka3005p":["",[],["cli.rs","lib.rs"]]\
+}');
 createSourceSidebar();
