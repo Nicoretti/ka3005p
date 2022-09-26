@@ -27,4 +27,4 @@ path = "src/bin/ka3005p.rs"
 [profile.release]
 lto = true
 codegen-units = 1
-# strip = "symbols" # Enable once https://github.com/rust-lang/rust/issues/72110 is resolved
+strip = "symbols"
