@@ -18,7 +18,7 @@ categories = ["command-line-utilities"]
 serialport = "4.1.0"
 human-panic = "1.0.3"
 anyhow = "1.0.63"
-clap = { version = "3.2.22", features = ["derive"] }
+clap = { version = "4.0.7", features = ["derive"] }
 
 [[bin]]
 name = "ka3005p"
