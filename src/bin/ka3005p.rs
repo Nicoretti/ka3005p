@@ -39,7 +39,7 @@ fn main() -> ::anyhow::Result<(), anyhow::Error> {
                 let normalized = String::from(line?.trim());
                 let mut argv: Vec<&str> = normalized.split(' ').collect();
                 argv.insert(0, "ka3005p");
-                let arguments = ka3005p::cli::Ka3005p::from_iter(argv.into_iter());
+                let arguments = ka3005p::cli::Ka3005p::parse_from(argv.into_iter());
                 serial.execute(
                     arguments
                         .command
