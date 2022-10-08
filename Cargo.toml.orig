@@ -15,10 +15,17 @@ categories = ["command-line-utilities"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+<<<<<<< HEAD
 serialport = "4.*"
 human-panic = "1.*"
 anyhow = "1.*"
 clap = { version = "4.*", features = ["derive"] }
+=======
+serialport = "*"
+human-panic = "*"
+anyhow = "*"
+clap = { version = "*", features = ["derive"] }
+>>>>>>> 4acb292b3af03ec0cf4418bec2acbd7fc4fe7dee
 
 [[bin]]
 name = "ka3005p"
