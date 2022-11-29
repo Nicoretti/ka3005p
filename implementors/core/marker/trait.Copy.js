@@ -1,3 +1,3 @@
-(function() {var implementors = {};
-implementors["ka3005p"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.64.0/core/marker/trait.Copy.html\" title=\"trait core::marker::Copy\">Copy</a> for <a class=\"enum\" href=\"ka3005p/enum.Switch.html\" title=\"enum ka3005p::Switch\">Switch</a>","synthetic":false,"types":["ka3005p::Switch"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"ka3005p":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.65.0/core/marker/trait.Copy.html\" title=\"trait core::marker::Copy\">Copy</a> for <a class=\"enum\" href=\"ka3005p/enum.Switch.html\" title=\"enum ka3005p::Switch\">Switch</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cli.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cli.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../ka3005p/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../ka3005p/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../ka3005p/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cli.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cli.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../ka3005p/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../ka3005p/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../ka3005p/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -83,90 +83,90 @@
 <span id="83">83</span>
 <span id="84">84</span>
 <span id="85">85</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">clap</span>::{<span class="ident">Parser</span>, <span class="ident">Subcommand</span>};
-<span class="kw">use</span> <span class="ident">std::clone::Clone</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>clap::{Parser, Subcommand};
+<span class="kw">use </span>std::clone::Clone;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Subcommand</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Command</span> {
-    <span class="doccomment">/// Turns on or off the ouput of the power supply</span>
-    <span class="ident">Power</span> {
-        <span class="doccomment">/// on/off</span>
-        <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">short</span>, <span class="ident">long</span>)]</span>
-        <span class="ident">switch</span>: <span class="ident"><span class="kw">crate</span>::Switch</span>,
+<span class="attribute">#[derive(Copy, Clone, PartialEq, Subcommand)]
+</span><span class="kw">pub enum </span>Command {
+    <span class="doccomment">/// Turns on or off the ouput of the power supply
+    </span>Power {
+        <span class="doccomment">/// on/off
+        </span><span class="attribute">#[clap(short, long)]
+        </span>switch: <span class="kw">crate</span>::Switch,
     },
-    <span class="doccomment">/// Return status inforation about the power spply</span>
-    <span class="ident">Status</span>,
-    <span class="doccomment">/// Set the voltage of the ouput or config</span>
-    <span class="ident">Voltage</span> {
-        <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;volts&quot;</span>)]</span>
-        <span class="ident">v</span>: <span class="ident">f32</span>,
+    <span class="doccomment">/// Return status inforation about the power spply
+    </span>Status,
+    <span class="doccomment">/// Set the voltage of the ouput or config
+    </span>Voltage {
+        <span class="attribute">#[clap(help = <span class="string">&quot;volts&quot;</span>)]
+        </span>v: f32,
     },
-    <span class="doccomment">/// Set the current of the ouput or config</span>
-    <span class="ident">Current</span> {
-        <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;ampere&quot;</span>)]</span>
-        <span class="ident">a</span>: <span class="ident">f32</span>,
+    <span class="doccomment">/// Set the current of the ouput or config
+    </span>Current {
+        <span class="attribute">#[clap(help = <span class="string">&quot;ampere&quot;</span>)]
+        </span>a: f32,
     },
-    <span class="doccomment">/// Saves current pannel settings to specified config</span>
-    <span class="ident">Save</span> {
-        <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;1,2,3,4&quot;</span>)]</span>
-        <span class="ident">id</span>: <span class="ident">u32</span>,
+    <span class="doccomment">/// Saves current pannel settings to specified config
+    </span>Save {
+        <span class="attribute">#[clap(help = <span class="string">&quot;1,2,3,4&quot;</span>)]
+        </span>id: u32,
     },
-    <span class="doccomment">/// Loads config settings of specified no.</span>
-    <span class="ident">Load</span> {
-        <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;1,2,3,4&quot;</span>)]</span>
-        <span class="ident">id</span>: <span class="ident">u32</span>,
+    <span class="doccomment">/// Loads config settings of specified no.
+    </span>Load {
+        <span class="attribute">#[clap(help = <span class="string">&quot;1,2,3,4&quot;</span>)]
+        </span>id: u32,
     },
-    <span class="doccomment">/// Enable/Disable over current protection</span>
-    <span class="ident">Ocp</span> {
-        <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;on/off&quot;</span>)]</span>
-        <span class="ident">switch</span>: <span class="ident"><span class="kw">crate</span>::Switch</span>,
+    <span class="doccomment">/// Enable/Disable over current protection
+    </span>Ocp {
+        <span class="attribute">#[clap(help = <span class="string">&quot;on/off&quot;</span>)]
+        </span>switch: <span class="kw">crate</span>::Switch,
     },
-    <span class="doccomment">/// Enable/Disable over voltage protection</span>
-    <span class="ident">Ovp</span> {
-        <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;on/off&quot;</span>)]</span>
-        <span class="ident">switch</span>: <span class="ident"><span class="kw">crate</span>::Switch</span>,
+    <span class="doccomment">/// Enable/Disable over voltage protection
+    </span>Ovp {
+        <span class="attribute">#[clap(help = <span class="string">&quot;on/off&quot;</span>)]
+        </span>switch: <span class="kw">crate</span>::Switch,
     },
-    <span class="doccomment">/// Enable/Disable Beep</span>
-    <span class="ident">Beep</span> {
-        <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;on/off&quot;</span>)]</span>
-        <span class="ident">switch</span>: <span class="ident"><span class="kw">crate</span>::Switch</span>,
+    <span class="doccomment">/// Enable/Disable Beep
+    </span>Beep {
+        <span class="attribute">#[clap(help = <span class="string">&quot;on/off&quot;</span>)]
+        </span>switch: <span class="kw">crate</span>::Switch,
     },
-    <span class="doccomment">/// list possible power supply devices</span>
-    <span class="ident">List</span> {
-        <span class="doccomment">/// List all serial ports, not just ones that match the USB ids</span>
-        <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">short</span>, <span class="ident">long</span>)]</span>
-        <span class="ident">verbose</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// list possible power supply devices
+    </span>List {
+        <span class="doccomment">/// List all serial ports, not just ones that match the USB ids
+        </span><span class="attribute">#[clap(short, long)]
+        </span>verbose: bool,
     },
-    <span class="doccomment">/// Read commands from stdin and execute them</span>
-    <span class="ident">Interactive</span>,
+    <span class="doccomment">/// Read commands from stdin and execute them
+    </span>Interactive,
 }
 
-<span class="kw">impl</span> <span class="ident">std::convert::TryInto</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Command</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Command</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">anyhow::Error</span>;
-    <span class="kw">fn</span> <span class="ident">try_into</span>(<span class="self">self</span>) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Command</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Command::Power</span> { <span class="ident">switch</span> } =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="kw">crate</span>::Command::Power</span>(<span class="ident">switch</span>)),
-            <span class="ident">Command::Ovp</span> { <span class="ident">switch</span> } =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="kw">crate</span>::Command::Ovp</span>(<span class="ident">switch</span>)),
-            <span class="ident">Command::Ocp</span> { <span class="ident">switch</span> } =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="kw">crate</span>::Command::Ocp</span>(<span class="ident">switch</span>)),
-            <span class="ident">Command::Beep</span> { <span class="ident">switch</span> } =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="kw">crate</span>::Command::Beep</span>(<span class="ident">switch</span>)),
-            <span class="ident">Command::Load</span> { <span class="ident">id</span> } =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="kw">crate</span>::Command::Load</span>(<span class="ident">id</span>)),
-            <span class="ident">Command::Save</span> { <span class="ident">id</span> } =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="kw">crate</span>::Command::Save</span>(<span class="ident">id</span>)),
-            <span class="ident">Command::Voltage</span> { <span class="ident">v</span> } =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="kw">crate</span>::Command::Voltage</span>(<span class="ident">v</span>)),
-            <span class="ident">Command::Current</span> { <span class="ident">a</span> } =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="kw">crate</span>::Command::Current</span>(<span class="ident">a</span>)),
-            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;Conversion is not supported&quot;</span>)),
+<span class="kw">impl </span>std::convert::TryInto&lt;<span class="kw">crate</span>::Command&gt; <span class="kw">for </span>Command {
+    <span class="kw">type </span>Error = anyhow::Error;
+    <span class="kw">fn </span>try_into(<span class="self">self</span>) -&gt; anyhow::Result&lt;<span class="kw">crate</span>::Command, <span class="self">Self</span>::Error&gt; {
+        <span class="kw">match </span><span class="self">self </span>{
+            Command::Power { switch } =&gt; <span class="prelude-val">Ok</span>(<span class="kw">crate</span>::Command::Power(switch)),
+            Command::Ovp { switch } =&gt; <span class="prelude-val">Ok</span>(<span class="kw">crate</span>::Command::Ovp(switch)),
+            Command::Ocp { switch } =&gt; <span class="prelude-val">Ok</span>(<span class="kw">crate</span>::Command::Ocp(switch)),
+            Command::Beep { switch } =&gt; <span class="prelude-val">Ok</span>(<span class="kw">crate</span>::Command::Beep(switch)),
+            Command::Load { id } =&gt; <span class="prelude-val">Ok</span>(<span class="kw">crate</span>::Command::Load(id)),
+            Command::Save { id } =&gt; <span class="prelude-val">Ok</span>(<span class="kw">crate</span>::Command::Save(id)),
+            Command::Voltage { v } =&gt; <span class="prelude-val">Ok</span>(<span class="kw">crate</span>::Command::Voltage(v)),
+            Command::Current { a } =&gt; <span class="prelude-val">Ok</span>(<span class="kw">crate</span>::Command::Current(a)),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;Conversion is not supported&quot;</span>)),
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Parser</span>)]</span>
-<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">author</span>, <span class="ident">version</span>, <span class="ident">about</span>, <span class="ident">long_about</span> <span class="op">=</span> <span class="prelude-val">None</span>)]</span>
-<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">propagate_version</span> <span class="op">=</span> <span class="bool-val">true</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Ka3005p</span> {
-    <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">subcommand</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">command</span>: <span class="ident">Command</span>,
-    <span class="doccomment">/// Manually select power supply serial device</span>
-    <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">short</span>, <span class="ident">long</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">device</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+<span class="attribute">#[derive(Parser)]
+#[clap(author, version, about, long_about = <span class="prelude-val">None</span>)]
+#[clap(propagate_version = <span class="bool-val">true</span>)]
+</span><span class="kw">pub struct </span>Ka3005p {
+    <span class="attribute">#[clap(subcommand)]
+    </span><span class="kw">pub </span>command: Command,
+    <span class="doccomment">/// Manually select power supply serial device
+    </span><span class="attribute">#[clap(short, long)]
+    </span><span class="kw">pub </span>device: <span class="prelude-ty">Option</span>&lt;String&gt;,
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="ka3005p" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="ka3005p" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

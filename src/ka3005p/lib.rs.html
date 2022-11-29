@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../ka3005p/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../ka3005p/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../ka3005p/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../ka3005p/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../ka3005p/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../ka3005p/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -426,433 +426,433 @@
 <span id="426">426</span>
 <span id="427">427</span>
 <span id="428">428</span>
-</pre><pre class="rust"><code><span class="doccomment">//! This library helps connect to common power lab bench supplies from Tenma, Farnell, Stamos, Korad, Velleman, RS and various other clones.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! This library helps connect to common power lab bench supplies from Tenma, Farnell, Stamos, Korad, Velleman, RS and various other clones.
 
-<span class="doccomment">//! A quick example of using the library:</span>
-<span class="doccomment">//! ```no_run</span>
-<span class="doccomment">//! use ka3005p::{Ka3005p, Command, Switch};</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! // There is a helper function to automatically find the power supply</span>
-<span class="doccomment">//! let mut dev = ka3005p::find_serial_port().unwrap();</span>
-<span class="doccomment">//! // or if you wish to target a particular serial power</span>
-<span class="doccomment">//! let mut dev = Ka3005p::new(&quot;dev/ttyS0&quot;).unwrap();</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! println!(&quot;{}&quot;, dev.status().unwrap());</span>
-<span class="doccomment">//! // &quot;Voltage: 12.00, Current: 0.305, Channel1: CV, Channel2: CV, Lock: Off, Beep: On, Output: On&quot;</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! // Switching the power supply off</span>
-<span class="doccomment">//! dev.execute(Command::Power(Switch::Off)).unwrap();</span>
-<span class="doccomment">//! // Setting the voltage to 12.1v</span>
-<span class="doccomment">//! dev.execute(Command::Voltage(12.1)).unwrap();</span>
-<span class="doccomment">//! ```</span>
+//! A quick example of using the library:
+//! ```no_run
+//! use ka3005p::{Ka3005p, Command, Switch};
+//!
+//! // There is a helper function to automatically find the power supply
+//! let mut dev = ka3005p::find_serial_port().unwrap();
+//! // or if you wish to target a particular serial power
+//! let mut dev = Ka3005p::new(&quot;dev/ttyS0&quot;).unwrap();
+//!
+//! println!(&quot;{}&quot;, dev.status().unwrap());
+//! // &quot;Voltage: 12.00, Current: 0.305, Channel1: CV, Channel2: CV, Lock: Off, Beep: On, Output: On&quot;
+//!
+//! // Switching the power supply off
+//! dev.execute(Command::Power(Switch::Off)).unwrap();
+//! // Setting the voltage to 12.1v
+//! dev.execute(Command::Voltage(12.1)).unwrap();
+//! ```
 
-<span class="doccomment">//! You can also use the accompanying command line utility:</span>
-<span class="doccomment">//! ```text</span>
-<span class="doccomment">//! &gt; ka3005p status</span>
-<span class="doccomment">//! Voltage: 12.00, Current: 0.305, Channel1: CV, Channel2: CV, Lock: Off, Beep: On, Output: On</span>
-<span class="doccomment">//! &gt; ka3005p power off</span>
-<span class="doccomment">//! Voltage: 12.00, Current: 0.305, Channel1: CV, Channel2: CV, Lock: Off, Beep: On, Output: Off</span>
-<span class="doccomment">//! &gt; ka3005p voltage 12.1</span>
-<span class="doccomment">//! ```</span>
+//! You can also use the accompanying command line utility:
+//! ```text
+//! &gt; ka3005p status
+//! Voltage: 12.00, Current: 0.305, Channel1: CV, Channel2: CV, Lock: Off, Beep: On, Output: On
+//! &gt; ka3005p power off
+//! Voltage: 12.00, Current: 0.305, Channel1: CV, Channel2: CV, Lock: Off, Beep: On, Output: Off
+//! &gt; ka3005p voltage 12.1
+//! ```
 
-<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">warnings</span>)]</span>
-<span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
-<span class="kw">use</span> <span class="ident">anyhow::Context</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>;
-<span class="kw">use</span> <span class="ident">std::str</span>;
-<span class="kw">use</span> <span class="ident">std::time</span>;
+</span><span class="attribute">#![deny(warnings)]
+#![warn(missing_docs)]
+</span><span class="kw">use </span>anyhow::Context;
+<span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::io;
+<span class="kw">use </span>std::str;
+<span class="kw">use </span>std::time;
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span> <span class="comment">// Users of the library shouldn&#39;t use this</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">cli</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">serialport</span>;
+<span class="attribute">#[doc(hidden)] </span><span class="comment">// Users of the library shouldn&#39;t use this
+</span><span class="kw">pub mod </span>cli;
+<span class="kw">pub use </span>serialport;
 
-<span class="doccomment">/// On / Off</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Switch</span> {
-    <span class="doccomment">/// Enable the feature/output</span>
-    <span class="ident">On</span>,
-    <span class="doccomment">/// Disable the feature/output</span>
-    <span class="ident">Off</span>,
+<span class="doccomment">/// On / Off
+</span><span class="attribute">#[derive(Debug, PartialEq, Eq, Copy, Clone)]
+</span><span class="kw">pub enum </span>Switch {
+    <span class="doccomment">/// Enable the feature/output
+    </span>On,
+    <span class="doccomment">/// Disable the feature/output
+    </span>Off,
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Switch</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">bool</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">w</span>: <span class="ident">Switch</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">match</span> <span class="ident">w</span> {
-            <span class="ident">Switch::On</span> =&gt; <span class="bool-val">true</span>,
-            <span class="ident">Switch::Off</span> =&gt; <span class="bool-val">false</span>,
+<span class="kw">impl </span>From&lt;Switch&gt; <span class="kw">for </span>bool {
+    <span class="kw">fn </span>from(w: Switch) -&gt; bool {
+        <span class="kw">match </span>w {
+            Switch::On =&gt; <span class="bool-val">true</span>,
+            Switch::Off =&gt; <span class="bool-val">false</span>,
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">std::convert::From</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Switch</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="ident">bool</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">if</span> <span class="ident">x</span> {
-            <span class="ident">Switch::On</span>
-        } <span class="kw">else</span> {
-            <span class="ident">Switch::Off</span>
+<span class="kw">impl </span>std::convert::From&lt;bool&gt; <span class="kw">for </span>Switch {
+    <span class="kw">fn </span>from(x: bool) -&gt; <span class="self">Self </span>{
+        <span class="kw">if </span>x {
+            Switch::On
+        } <span class="kw">else </span>{
+            Switch::Off
         }
     }
 }
 
-<span class="doccomment">/// Commands supported by the power supply.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Command</span> {
-    <span class="doccomment">/// Enable/Disable Power</span>
-    <span class="ident">Power</span>(<span class="ident">Switch</span>),
-    <span class="doccomment">/// Enable/Disable Beep</span>
-    <span class="ident">Beep</span>(<span class="ident">Switch</span>),
-    <span class="doccomment">/// Enable/Disable over voltage protection</span>
-    <span class="ident">Ovp</span>(<span class="ident">Switch</span>),
-    <span class="doccomment">/// Enable/Disable over current protection</span>
-    <span class="ident">Ocp</span>(<span class="ident">Switch</span>),
-    <span class="doccomment">/// Store current settings to memory. Supports 1 to 5</span>
-    <span class="ident">Save</span>(<span class="ident">u32</span>),
-    <span class="doccomment">/// Load stored setting. Note will disable power supply output on load.</span>
-    <span class="ident">Load</span>(<span class="ident">u32</span>),
-    <span class="doccomment">/// Sets the voltage. Units in Volts</span>
-    <span class="ident">Voltage</span>(<span class="ident">f32</span>),
-    <span class="doccomment">/// Sets the current. Units in Amps</span>
-    <span class="ident">Current</span>(<span class="ident">f32</span>),
+<span class="doccomment">/// Commands supported by the power supply.
+</span><span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub enum </span>Command {
+    <span class="doccomment">/// Enable/Disable Power
+    </span>Power(Switch),
+    <span class="doccomment">/// Enable/Disable Beep
+    </span>Beep(Switch),
+    <span class="doccomment">/// Enable/Disable over voltage protection
+    </span>Ovp(Switch),
+    <span class="doccomment">/// Enable/Disable over current protection
+    </span>Ocp(Switch),
+    <span class="doccomment">/// Store current settings to memory. Supports 1 to 5
+    </span>Save(u32),
+    <span class="doccomment">/// Load stored setting. Note will disable power supply output on load.
+    </span>Load(u32),
+    <span class="doccomment">/// Sets the voltage. Units in Volts
+    </span>Voltage(f32),
+    <span class="doccomment">/// Sets the current. Units in Amps
+    </span>Current(f32),
 }
 
-<span class="doccomment">/// Structure containing all the information fields from the power supply</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Flags</span> {
-    <span class="doccomment">/// The raw byte</span>
-    <span class="ident">flags</span>: <span class="ident">u8</span>,
-    <span class="doccomment">/// Channel 1. CV or CC mode</span>
-    <span class="kw">pub</span> <span class="ident">channel1</span>: <span class="ident">Mode</span>,
-    <span class="doccomment">/// Channel 2. CV or CC mode</span>
-    <span class="kw">pub</span> <span class="ident">channel2</span>: <span class="ident">Mode</span>,
-    <span class="doccomment">/// Interface beep enabled or disabled.</span>
-    <span class="kw">pub</span> <span class="ident">beep</span>: <span class="ident">Switch</span>,
-    <span class="doccomment">/// Interface locked. Will ignore button presses but not serial commands.</span>
-    <span class="kw">pub</span> <span class="ident">lock</span>: <span class="ident">Lock</span>,
-    <span class="doccomment">/// Output enabled / disabled</span>
-    <span class="kw">pub</span> <span class="ident">output</span>: <span class="ident">Switch</span>,
-    <span class="comment">// TODO - Some people seem to have read the OCP OVP flags in here.</span>
-    <span class="comment">// I can&#39;t find it in any manuals but it might be trying to figure this out</span>
+<span class="doccomment">/// Structure containing all the information fields from the power supply
+</span><span class="attribute">#[derive(Debug, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>Flags {
+    <span class="doccomment">/// The raw byte
+    </span>flags: u8,
+    <span class="doccomment">/// Channel 1. CV or CC mode
+    </span><span class="kw">pub </span>channel1: Mode,
+    <span class="doccomment">/// Channel 2. CV or CC mode
+    </span><span class="kw">pub </span>channel2: Mode,
+    <span class="doccomment">/// Interface beep enabled or disabled.
+    </span><span class="kw">pub </span>beep: Switch,
+    <span class="doccomment">/// Interface locked. Will ignore button presses but not serial commands.
+    </span><span class="kw">pub </span>lock: Lock,
+    <span class="doccomment">/// Output enabled / disabled
+    </span><span class="kw">pub </span>output: Switch,
+    <span class="comment">// TODO - Some people seem to have read the OCP OVP flags in here.
+    // I can&#39;t find it in any manuals but it might be trying to figure this out
+</span>}
+
+<span class="doccomment">/// Channel One / Two
+</span><span class="attribute">#[derive(Debug, PartialEq, Eq)]
+</span><span class="kw">pub enum </span>Channel {
+    <span class="doccomment">/// Channel One of the power supply
+    </span>One,
+    <span class="doccomment">/// Channel Two of the power supply (if your device has one)
+    </span>Two,
 }
 
-<span class="doccomment">/// Channel One / Two</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Channel</span> {
-    <span class="doccomment">/// Channel One of the power supply</span>
-    <span class="ident">One</span>,
-    <span class="doccomment">/// Channel Two of the power supply (if your device has one)</span>
-    <span class="ident">Two</span>,
+<span class="doccomment">/// Locked / Unlocked
+</span><span class="attribute">#[derive(Debug, PartialEq, Eq)]
+</span><span class="kw">pub enum </span>Lock {
+    <span class="doccomment">/// Device is currently locked. Ignores physical buttons but will still respond to serial commands
+    </span>Locked,
+    <span class="doccomment">/// Device is currently unlocked.
+    </span>Unlocked,
 }
 
-<span class="doccomment">/// Locked / Unlocked</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Lock</span> {
-    <span class="doccomment">/// Device is currently locked. Ignores physical buttons but will still respond to serial commands</span>
-    <span class="ident">Locked</span>,
-    <span class="doccomment">/// Device is currently unlocked.</span>
-    <span class="ident">Unlocked</span>,
+<span class="doccomment">/// CC or CV mode
+</span><span class="attribute">#[derive(Debug, PartialEq, Eq)]
+</span><span class="kw">pub enum </span>Mode {
+    <span class="doccomment">/// Power supply is in Constant Current mode
+    </span>Cc,
+    <span class="doccomment">/// Power supply is in Constant Voltage mode
+    </span>Cv,
 }
 
-<span class="doccomment">/// CC or CV mode</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Mode</span> {
-    <span class="doccomment">/// Power supply is in Constant Current mode</span>
-    <span class="ident">Cc</span>,
-    <span class="doccomment">/// Power supply is in Constant Voltage mode</span>
-    <span class="ident">Cv</span>,
+<span class="doccomment">/// Contains the current Voltage, Current and Flags of the power supply
+</span><span class="kw">pub struct </span>Status {
+    <span class="doccomment">/// Flags as reported by the power supply
+    </span><span class="kw">pub </span>flags: Flags,
+    <span class="doccomment">/// Voltage in volts
+    </span><span class="kw">pub </span>voltage: f32,
+    <span class="doccomment">/// Current in amps
+    </span><span class="kw">pub </span>current: f32,
+    <span class="doccomment">/// Target Voltage in volts
+    </span><span class="kw">pub </span>set_voltage: f32,
+    <span class="doccomment">/// Current Limit in amps
+    </span><span class="kw">pub </span>set_current: f32,
 }
 
-<span class="doccomment">/// Contains the current Voltage, Current and Flags of the power supply</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Status</span> {
-    <span class="doccomment">/// Flags as reported by the power supply</span>
-    <span class="kw">pub</span> <span class="ident">flags</span>: <span class="ident">Flags</span>,
-    <span class="doccomment">/// Voltage in volts</span>
-    <span class="kw">pub</span> <span class="ident">voltage</span>: <span class="ident">f32</span>,
-    <span class="doccomment">/// Current in amps</span>
-    <span class="kw">pub</span> <span class="ident">current</span>: <span class="ident">f32</span>,
-    <span class="doccomment">/// Target Voltage in volts</span>
-    <span class="kw">pub</span> <span class="ident">set_voltage</span>: <span class="ident">f32</span>,
-    <span class="doccomment">/// Current Limit in amps</span>
-    <span class="kw">pub</span> <span class="ident">set_current</span>: <span class="ident">f32</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">std::str::FromStr</span> <span class="kw">for</span> <span class="ident">Switch</span> {
-    <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> <span class="ident">anyhow::Error</span>;
-    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Err</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="ident">s</span>.<span class="ident">to_lowercase</span>().<span class="ident">as_ref</span>() {
-            <span class="string">&quot;on&quot;</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Switch::On</span>),
-            <span class="string">&quot;off&quot;</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Switch::Off</span>),
-            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;Value must be either &#39;on&#39; or &#39;off&#39;&quot;</span>)),
+<span class="kw">impl </span>std::str::FromStr <span class="kw">for </span>Switch {
+    <span class="kw">type </span><span class="prelude-val">Err </span>= anyhow::Error;
+    <span class="kw">fn </span>from_str(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt; {
+        <span class="kw">match </span>s.to_lowercase().as_ref() {
+            <span class="string">&quot;on&quot; </span>=&gt; <span class="prelude-val">Ok</span>(Switch::On),
+            <span class="string">&quot;off&quot; </span>=&gt; <span class="prelude-val">Ok</span>(Switch::Off),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;Value must be either &#39;on&#39; or &#39;off&#39;&quot;</span>)),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Status</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Status {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
         <span class="macro">write!</span>(
-            <span class="ident">f</span>,
+            f,
             <span class="string">&quot;Voltage: {:5.2} ({:5.2}), Current: {:5.3} ({:5.3}), CH1: {:?}, CH2: {:?} Lock: {:?}, Beep: {:?}, Output: {:?}&quot;</span>,
-            <span class="self">self</span>.<span class="ident">voltage</span>,
-            <span class="self">self</span>.<span class="ident">set_voltage</span>,
-            <span class="self">self</span>.<span class="ident">current</span>,
-            <span class="self">self</span>.<span class="ident">set_current</span>,
-            <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">channel1</span>,
-            <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">channel2</span>,
-            <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">lock</span>,
-            <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">beep</span>,
-            <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">output</span>,
+            <span class="self">self</span>.voltage,
+            <span class="self">self</span>.set_voltage,
+            <span class="self">self</span>.current,
+            <span class="self">self</span>.set_current,
+            <span class="self">self</span>.flags.channel1,
+            <span class="self">self</span>.flags.channel2,
+            <span class="self">self</span>.flags.lock,
+            <span class="self">self</span>.flags.beep,
+            <span class="self">self</span>.flags.output,
         )
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Flags</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">Flags::new</span>(<span class="ident">flags</span>)
+<span class="kw">impl </span>From&lt;u8&gt; <span class="kw">for </span>Flags {
+    <span class="kw">fn </span>from(flags: u8) -&gt; <span class="self">Self </span>{
+        Flags::new(flags)
     }
 }
-<span class="kw">impl</span> <span class="ident">Flags</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">flags</span>: <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">channel1</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">flags</span> <span class="op">&amp;</span> <span class="number">0x01</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Mode::Cv</span>
-        } <span class="kw">else</span> {
-            <span class="ident">Mode::Cc</span>
+<span class="kw">impl </span>Flags {
+    <span class="kw">fn </span>new(flags: u8) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>channel1 = <span class="kw">if </span>flags &amp; <span class="number">0x01 </span>!= <span class="number">0 </span>{
+            Mode::Cv
+        } <span class="kw">else </span>{
+            Mode::Cc
         };
-        <span class="kw">let</span> <span class="ident">channel2</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">flags</span> <span class="op">&amp;</span> <span class="number">0x02</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Mode::Cv</span>
-        } <span class="kw">else</span> {
-            <span class="ident">Mode::Cc</span>
+        <span class="kw">let </span>channel2 = <span class="kw">if </span>flags &amp; <span class="number">0x02 </span>!= <span class="number">0 </span>{
+            Mode::Cv
+        } <span class="kw">else </span>{
+            Mode::Cc
         };
-        <span class="kw">let</span> <span class="ident">beep</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">flags</span> <span class="op">&amp;</span> <span class="number">0x10</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Switch::On</span>
-        } <span class="kw">else</span> {
-            <span class="ident">Switch::Off</span>
+        <span class="kw">let </span>beep = <span class="kw">if </span>flags &amp; <span class="number">0x10 </span>!= <span class="number">0 </span>{
+            Switch::On
+        } <span class="kw">else </span>{
+            Switch::Off
         };
-        <span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">flags</span> <span class="op">&amp;</span> <span class="number">0x20</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Lock::Locked</span>
-        } <span class="kw">else</span> {
-            <span class="ident">Lock::Unlocked</span>
+        <span class="kw">let </span>lock = <span class="kw">if </span>flags &amp; <span class="number">0x20 </span>!= <span class="number">0 </span>{
+            Lock::Locked
+        } <span class="kw">else </span>{
+            Lock::Unlocked
         };
-        <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">flags</span> <span class="op">&amp;</span> <span class="number">0x40</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Switch::On</span>
-        } <span class="kw">else</span> {
-            <span class="ident">Switch::Off</span>
+        <span class="kw">let </span>output = <span class="kw">if </span>flags &amp; <span class="number">0x40 </span>!= <span class="number">0 </span>{
+            Switch::On
+        } <span class="kw">else </span>{
+            Switch::Off
         };
-        <span class="ident">Flags</span> {
-            <span class="ident">flags</span>,
-            <span class="ident">channel1</span>,
-            <span class="ident">channel2</span>,
-            <span class="ident">beep</span>,
-            <span class="ident">lock</span>,
-            <span class="ident">output</span>,
+        Flags {
+            flags,
+            channel1,
+            channel2,
+            beep,
+            lock,
+            output,
         }
     }
 }
 
-<span class="doccomment">/// A helper function to list all of the detected power supplies.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">list_serial_ports</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">serialport::SerialPortInfo</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">serial_devices</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">serialport::SerialPortInfo</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">serialport::available_ports</span>()
-        .<span class="ident">unwrap</span>()
-        .<span class="ident">into_iter</span>()
-        .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">info</span><span class="op">|</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">info</span>.<span class="ident">port_type</span> {
-            <span class="ident">serialport::SerialPortType::UsbPort</span>(<span class="ident">usb</span>) =&gt; <span class="ident">usb</span>.<span class="ident">vid</span> <span class="op">==</span> <span class="number">1046</span>,
-            <span class="kw">_</span> =&gt; <span class="bool-val">false</span>,
+<span class="doccomment">/// A helper function to list all of the detected power supplies.
+</span><span class="kw">pub fn </span>list_serial_ports() -&gt; Vec&lt;serialport::SerialPortInfo&gt; {
+    <span class="kw">let </span>serial_devices: Vec&lt;serialport::SerialPortInfo&gt; = serialport::available_ports()
+        .unwrap()
+        .into_iter()
+        .filter(|info| <span class="kw">match </span><span class="kw-2">&amp;</span>info.port_type {
+            serialport::SerialPortType::UsbPort(usb) =&gt; usb.vid == <span class="number">1046</span>,
+            <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
         })
-        .<span class="ident">collect</span>();
-    <span class="ident">serial_devices</span>
+        .collect();
+    serial_devices
 }
 
-<span class="doccomment">/// Helper function that automatically finds and connects to a power supply.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_serial_port</span>() -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident">Ka3005p</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">serial_devices</span> <span class="op">=</span> <span class="ident">list_serial_ports</span>();
+<span class="doccomment">/// Helper function that automatically finds and connects to a power supply.
+</span><span class="kw">pub fn </span>find_serial_port() -&gt; anyhow::Result&lt;Ka3005p&gt; {
+    <span class="kw">let </span>serial_devices = list_serial_ports();
 
-    <span class="kw">match</span> <span class="ident">serial_devices</span>.<span class="ident">len</span>() {
-        <span class="number">0</span> =&gt; <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;No Power Supply Found!&quot;</span>)),
-        <span class="kw">_</span> =&gt; <span class="ident">Ka3005p::new</span>(<span class="kw-2">&amp;</span><span class="ident">serial_devices</span>[<span class="number">0</span>].<span class="ident">port_name</span>),
+    <span class="kw">match </span>serial_devices.len() {
+        <span class="number">0 </span>=&gt; <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;No Power Supply Found!&quot;</span>)),
+        <span class="kw">_ </span>=&gt; Ka3005p::new(<span class="kw-2">&amp;</span>serial_devices[<span class="number">0</span>].port_name),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">std::convert::From</span><span class="op">&lt;</span><span class="ident">Command</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">c</span>: <span class="ident">Command</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">match</span> <span class="ident">c</span> {
-            <span class="ident">Command::Power</span>(<span class="ident">s</span>) =&gt; <span class="kw">match</span> <span class="ident">s</span> {
-                <span class="ident">Switch::On</span> =&gt; <span class="ident">String::from</span>(<span class="string">&quot;OUT1&quot;</span>),
-                <span class="ident">Switch::Off</span> =&gt; <span class="ident">String::from</span>(<span class="string">&quot;OUT0&quot;</span>),
+<span class="kw">impl </span>std::convert::From&lt;Command&gt; <span class="kw">for </span>String {
+    <span class="kw">fn </span>from(c: Command) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>c {
+            Command::Power(s) =&gt; <span class="kw">match </span>s {
+                Switch::On =&gt; String::from(<span class="string">&quot;OUT1&quot;</span>),
+                Switch::Off =&gt; String::from(<span class="string">&quot;OUT0&quot;</span>),
             },
-            <span class="ident">Command::Ovp</span>(<span class="ident">s</span>) =&gt; <span class="kw">match</span> <span class="ident">s</span> {
-                <span class="ident">Switch::On</span> =&gt; <span class="ident">String::from</span>(<span class="string">&quot;OVP1&quot;</span>),
-                <span class="ident">Switch::Off</span> =&gt; <span class="ident">String::from</span>(<span class="string">&quot;OVP0&quot;</span>),
+            Command::Ovp(s) =&gt; <span class="kw">match </span>s {
+                Switch::On =&gt; String::from(<span class="string">&quot;OVP1&quot;</span>),
+                Switch::Off =&gt; String::from(<span class="string">&quot;OVP0&quot;</span>),
             },
-            <span class="ident">Command::Ocp</span>(<span class="ident">s</span>) =&gt; <span class="kw">match</span> <span class="ident">s</span> {
-                <span class="ident">Switch::On</span> =&gt; <span class="ident">String::from</span>(<span class="string">&quot;OCP1&quot;</span>),
-                <span class="ident">Switch::Off</span> =&gt; <span class="ident">String::from</span>(<span class="string">&quot;OCP0&quot;</span>),
+            Command::Ocp(s) =&gt; <span class="kw">match </span>s {
+                Switch::On =&gt; String::from(<span class="string">&quot;OCP1&quot;</span>),
+                Switch::Off =&gt; String::from(<span class="string">&quot;OCP0&quot;</span>),
             },
-            <span class="ident">Command::Beep</span>(<span class="ident">s</span>) =&gt; <span class="kw">match</span> <span class="ident">s</span> {
-                <span class="ident">Switch::On</span> =&gt; <span class="ident">String::from</span>(<span class="string">&quot;BEEP1&quot;</span>),
-                <span class="ident">Switch::Off</span> =&gt; <span class="ident">String::from</span>(<span class="string">&quot;BEEP0&quot;</span>),
+            Command::Beep(s) =&gt; <span class="kw">match </span>s {
+                Switch::On =&gt; String::from(<span class="string">&quot;BEEP1&quot;</span>),
+                Switch::Off =&gt; String::from(<span class="string">&quot;BEEP0&quot;</span>),
             },
-            <span class="ident">Command::Save</span>(<span class="ident">id</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;SAV{}&quot;</span>, <span class="ident">id</span>),
-            <span class="ident">Command::Load</span>(<span class="ident">id</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;RCL{}&quot;</span>, <span class="ident">id</span>),
-            <span class="ident">Command::Voltage</span>(<span class="ident">v</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;VSET1:{:.2}&quot;</span>, <span class="ident">v</span>),
-            <span class="ident">Command::Current</span>(<span class="ident">i</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;ISET1:{:.3}&quot;</span>, <span class="ident">i</span>),
+            Command::Save(id) =&gt; <span class="macro">format!</span>(<span class="string">&quot;SAV{}&quot;</span>, id),
+            Command::Load(id) =&gt; <span class="macro">format!</span>(<span class="string">&quot;RCL{}&quot;</span>, id),
+            Command::Voltage(v) =&gt; <span class="macro">format!</span>(<span class="string">&quot;VSET1:{:.2}&quot;</span>, v),
+            Command::Current(i) =&gt; <span class="macro">format!</span>(<span class="string">&quot;ISET1:{:.3}&quot;</span>, i),
         }
     }
 }
 
-<span class="doccomment">/// The power supply. The main object of the library.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Ka3005p</span> {
-    <span class="ident">serial</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">serialport::SerialPort</span><span class="op">&gt;</span>,
+<span class="doccomment">/// The power supply. The main object of the library.
+</span><span class="kw">pub struct </span>Ka3005p {
+    serial: Box&lt;<span class="kw">dyn </span>serialport::SerialPort&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">Ka3005p</span> {
-    <span class="doccomment">/// Create a power supply object from a serial port address.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">port_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">serial</span> <span class="op">=</span> <span class="ident">serialport::new</span>(<span class="ident">port_name</span>, <span class="number">9600</span>)
-            .<span class="ident">timeout</span>(<span class="ident">time::Duration::from_millis</span>(<span class="number">60</span>))
-            .<span class="ident">parity</span>(<span class="ident">serialport::Parity::None</span>)
-            .<span class="ident">stop_bits</span>(<span class="ident">serialport::StopBits::One</span>)
-            .<span class="ident">open</span>()<span class="question-mark">?</span>;
+<span class="kw">impl </span>Ka3005p {
+    <span class="doccomment">/// Create a power supply object from a serial port address.
+    </span><span class="kw">pub fn </span>new(port_name: <span class="kw-2">&amp;</span>str) -&gt; anyhow::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>serial = serialport::new(port_name, <span class="number">9600</span>)
+            .timeout(time::Duration::from_millis(<span class="number">60</span>))
+            .parity(serialport::Parity::None)
+            .stop_bits(serialport::StopBits::One)
+            .open()<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">Ka3005p</span> { <span class="ident">serial</span> })
+        <span class="prelude-val">Ok</span>(Ka3005p { serial })
     }
 
-    <span class="doccomment">/// A convenience function to use if your power supply happens to be picky with the settings.</span>
-    <span class="doccomment">/// Note the library defaults have fairly large margins so this should be unnecessary.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_from_serial</span>(<span class="ident">serial</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">serialport::SerialPort</span><span class="op">&gt;</span>) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">Ka3005p</span> { <span class="ident">serial</span> })
+    <span class="doccomment">/// A convenience function to use if your power supply happens to be picky with the settings.
+    /// Note the library defaults have fairly large margins so this should be unnecessary.
+    </span><span class="kw">pub fn </span>new_from_serial(serial: Box&lt;<span class="kw">dyn </span>serialport::SerialPort&gt;) -&gt; anyhow::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="prelude-val">Ok</span>(Ka3005p { serial })
     }
 
-    <span class="doccomment">/// Execute a command on the power supply.</span>
-    <span class="doccomment">/// Note that these supplies do not return anything on a command so the result only indicates if the serial transfer was successful.</span>
-    <span class="doccomment">/// You will need to check that status to make sure the power supply is now in the state you expect.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">execute</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">command</span>: <span class="ident">Command</span>) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">run_command</span>(<span class="kw-2">&amp;</span><span class="ident">String::from</span>(<span class="ident">command</span>))<span class="question-mark">?</span>;
+    <span class="doccomment">/// Execute a command on the power supply.
+    /// Note that these supplies do not return anything on a command so the result only indicates if the serial transfer was successful.
+    /// You will need to check that status to make sure the power supply is now in the state you expect.
+    </span><span class="kw">pub fn </span>execute(<span class="kw-2">&amp;mut </span><span class="self">self</span>, command: Command) -&gt; anyhow::Result&lt;()&gt; {
+        <span class="self">self</span>.run_command(<span class="kw-2">&amp;</span>String::from(command))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Retrieve status information from the power supply</span>
-    <span class="doccomment">/// Returns a struct containing all the information about the power supply</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">status</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident">Status</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">flags</span>: <span class="ident">Flags</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">run_command_response</span>(<span class="string">&quot;STATUS?&quot;</span>)<span class="question-mark">?</span>[<span class="number">0</span>].<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">voltage</span> <span class="op">=</span> <span class="ident">String::from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">run_command_response</span>(<span class="string">&quot;VOUT1?&quot;</span>)<span class="question-mark">?</span>).<span class="ident">parse</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">current</span> <span class="op">=</span> <span class="ident">String::from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">run_command_response</span>(<span class="string">&quot;IOUT1?&quot;</span>)<span class="question-mark">?</span>).<span class="ident">parse</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">set_voltage</span> <span class="op">=</span> <span class="ident">String::from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">run_command_response</span>(<span class="string">&quot;VSET1?&quot;</span>)<span class="question-mark">?</span>).<span class="ident">parse</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">set_current</span> <span class="op">=</span> <span class="ident">String::from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">run_command_response</span>(<span class="string">&quot;ISET1?&quot;</span>)<span class="question-mark">?</span>).<span class="ident">parse</span>()<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">Status</span> {
-            <span class="ident">flags</span>,
-            <span class="ident">voltage</span>,
-            <span class="ident">current</span>,
-            <span class="ident">set_voltage</span>,
-            <span class="ident">set_current</span>,
+    <span class="doccomment">/// Retrieve status information from the power supply
+    /// Returns a struct containing all the information about the power supply
+    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; anyhow::Result&lt;Status&gt; {
+        <span class="kw">let </span>flags: Flags = <span class="self">self</span>.run_command_response(<span class="string">&quot;STATUS?&quot;</span>)<span class="question-mark">?</span>[<span class="number">0</span>].into();
+        <span class="kw">let </span>voltage = String::from_utf8_lossy(<span class="kw-2">&amp;</span><span class="self">self</span>.run_command_response(<span class="string">&quot;VOUT1?&quot;</span>)<span class="question-mark">?</span>).parse()<span class="question-mark">?</span>;
+        <span class="kw">let </span>current = String::from_utf8_lossy(<span class="kw-2">&amp;</span><span class="self">self</span>.run_command_response(<span class="string">&quot;IOUT1?&quot;</span>)<span class="question-mark">?</span>).parse()<span class="question-mark">?</span>;
+        <span class="kw">let </span>set_voltage = String::from_utf8_lossy(<span class="kw-2">&amp;</span><span class="self">self</span>.run_command_response(<span class="string">&quot;VSET1?&quot;</span>)<span class="question-mark">?</span>).parse()<span class="question-mark">?</span>;
+        <span class="kw">let </span>set_current = String::from_utf8_lossy(<span class="kw-2">&amp;</span><span class="self">self</span>.run_command_response(<span class="string">&quot;ISET1?&quot;</span>)<span class="question-mark">?</span>).parse()<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(Status {
+            flags,
+            voltage,
+            current,
+            set_voltage,
+            set_current,
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">run_command_response</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">command</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">run_command</span>(<span class="ident">command</span>)<span class="question-mark">?</span>;
-        <span class="macro">anyhow::ensure!</span>(<span class="op">!</span><span class="ident">res</span>.<span class="ident">is_empty</span>(), <span class="string">&quot;PSU did not respond with data&quot;</span>);
-        <span class="prelude-val">Ok</span>(<span class="ident">res</span>)
+    <span class="kw">fn </span>run_command_response(<span class="kw-2">&amp;mut </span><span class="self">self</span>, command: <span class="kw-2">&amp;</span>str) -&gt; anyhow::Result&lt;Vec&lt;u8&gt;&gt; {
+        <span class="kw">let </span>res = <span class="self">self</span>.run_command(command)<span class="question-mark">?</span>;
+        <span class="macro">anyhow::ensure!</span>(!res.is_empty(), <span class="string">&quot;PSU did not respond with data&quot;</span>);
+        <span class="prelude-val">Ok</span>(res)
     }
 
-    <span class="kw">fn</span> <span class="ident">run_command</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">command</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">anyhow::Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">command</span>.<span class="ident">as_bytes</span>();
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">serial</span>.<span class="ident">write</span>(<span class="ident">bytes</span>)<span class="question-mark">?</span> <span class="op">==</span> <span class="ident">bytes</span>.<span class="ident">len</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;Could not write command&quot;</span>));
+    <span class="kw">fn </span>run_command(<span class="kw-2">&amp;mut </span><span class="self">self</span>, command: <span class="kw-2">&amp;</span>str) -&gt; anyhow::Result&lt;Vec&lt;u8&gt;&gt; {
+        <span class="kw">let </span>bytes = command.as_bytes();
+        <span class="kw">if </span>!<span class="self">self</span>.serial.write(bytes)<span class="question-mark">? </span>== bytes.len() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">anyhow::anyhow!</span>(<span class="string">&quot;Could not write command&quot;</span>));
         }
-        <span class="self">self</span>.<span class="ident">serial</span>.<span class="ident">flush</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">is_done</span> <span class="op">=</span> <span class="bool-val">false</span>;
-        <span class="kw">while</span> <span class="op">!</span><span class="ident">is_done</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">serial_buf</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0</span>; <span class="number">512</span>];
-            <span class="kw">match</span> <span class="self">self</span>.<span class="ident">serial</span>.<span class="ident">read</span>(<span class="ident">serial_buf</span>.<span class="ident">as_mut_slice</span>()) {
-                <span class="prelude-val">Ok</span>(<span class="ident">count</span>) =&gt; {
-                    <span class="ident">result</span>.<span class="ident">extend</span>(<span class="ident">serial_buf</span>.<span class="ident">drain</span>(..<span class="ident">count</span>));
+        <span class="self">self</span>.serial.flush()<span class="question-mark">?</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>result: Vec&lt;u8&gt; = Vec::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>is_done = <span class="bool-val">false</span>;
+        <span class="kw">while </span>!is_done {
+            <span class="kw">let </span><span class="kw-2">mut </span>serial_buf: Vec&lt;u8&gt; = <span class="macro">vec!</span>[<span class="number">0</span>; <span class="number">512</span>];
+            <span class="kw">match </span><span class="self">self</span>.serial.read(serial_buf.as_mut_slice()) {
+                <span class="prelude-val">Ok</span>(count) =&gt; {
+                    result.extend(serial_buf.drain(..count));
                 }
-                <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">kind</span>() <span class="op">==</span> <span class="ident">io::ErrorKind::TimedOut</span> =&gt; {
-                    <span class="ident">is_done</span> <span class="op">=</span> <span class="bool-val">true</span>;
+                <span class="prelude-val">Err</span>(<span class="kw-2">ref </span>e) <span class="kw">if </span>e.kind() == io::ErrorKind::TimedOut =&gt; {
+                    is_done = <span class="bool-val">true</span>;
                 }
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;could not retrieve response from power supply&quot;</span>)
+                <span class="prelude-val">Err</span>(e) =&gt; {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(e).with_context(|| <span class="string">&quot;could not retrieve response from power supply&quot;</span>)
                 }
             };
         }
-        <span class="prelude-val">Ok</span>(<span class="ident">result</span>)
+        <span class="prelude-val">Ok</span>(result)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_channel1_status</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">Mode::Cc</span>, <span class="ident">Flags::new</span>(<span class="number">0</span>).<span class="ident">channel1</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">Mode::Cv</span>, <span class="ident">Flags::new</span>(<span class="number">1</span>).<span class="ident">channel1</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_channel1_status() {
+        <span class="macro">assert_eq!</span>(Mode::Cc, Flags::new(<span class="number">0</span>).channel1);
+        <span class="macro">assert_eq!</span>(Mode::Cv, Flags::new(<span class="number">1</span>).channel1);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_channel2_status</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">Mode::Cc</span>, <span class="ident">Flags::new</span>(<span class="number">0</span>).<span class="ident">channel2</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">Mode::Cv</span>, <span class="ident">Flags::new</span>(<span class="number">2</span>).<span class="ident">channel2</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_channel2_status() {
+        <span class="macro">assert_eq!</span>(Mode::Cc, Flags::new(<span class="number">0</span>).channel2);
+        <span class="macro">assert_eq!</span>(Mode::Cv, Flags::new(<span class="number">2</span>).channel2);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_beep_status</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">Switch::Off</span>, <span class="ident">Flags::new</span>(<span class="number">0</span>).<span class="ident">beep</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">Switch::On</span>, <span class="ident">Flags::new</span>(<span class="number">16</span>).<span class="ident">beep</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_beep_status() {
+        <span class="macro">assert_eq!</span>(Switch::Off, Flags::new(<span class="number">0</span>).beep);
+        <span class="macro">assert_eq!</span>(Switch::On, Flags::new(<span class="number">16</span>).beep);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_lock_status</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">Lock::Unlocked</span>, <span class="ident">Flags::new</span>(<span class="number">0</span>).<span class="ident">lock</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">Lock::Locked</span>, <span class="ident">Flags::new</span>(<span class="number">32</span>).<span class="ident">lock</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_lock_status() {
+        <span class="macro">assert_eq!</span>(Lock::Unlocked, Flags::new(<span class="number">0</span>).lock);
+        <span class="macro">assert_eq!</span>(Lock::Locked, Flags::new(<span class="number">32</span>).lock);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_output_status</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">Switch::Off</span>, <span class="ident">Flags::new</span>(<span class="number">0</span>).<span class="ident">output</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">Switch::On</span>, <span class="ident">Flags::new</span>(<span class="number">64</span>).<span class="ident">output</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_output_status() {
+        <span class="macro">assert_eq!</span>(Switch::Off, Flags::new(<span class="number">0</span>).output);
+        <span class="macro">assert_eq!</span>(Switch::On, Flags::new(<span class="number">64</span>).output);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_output_vset</span>() {
-        <span class="comment">// PSU is picky on the number of decimal places.</span>
-        <span class="macro">assert_eq!</span>(
-            <span class="ident">String::from</span>(<span class="ident">Command::Voltage</span>(<span class="number">3.123</span>)),
-            <span class="string">&quot;VSET1:3.12&quot;</span>.<span class="ident">to_string</span>()
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_output_vset() {
+        <span class="comment">// PSU is picky on the number of decimal places.
+        </span><span class="macro">assert_eq!</span>(
+            String::from(Command::Voltage(<span class="number">3.123</span>)),
+            <span class="string">&quot;VSET1:3.12&quot;</span>.to_string()
         );
         <span class="macro">assert_eq!</span>(
-            <span class="ident">String::from</span>(<span class="ident">Command::Voltage</span>(<span class="number">1.500</span>)),
-            <span class="string">&quot;VSET1:1.50&quot;</span>.<span class="ident">to_string</span>()
+            String::from(Command::Voltage(<span class="number">1.500</span>)),
+            <span class="string">&quot;VSET1:1.50&quot;</span>.to_string()
         );
         <span class="macro">assert_eq!</span>(
-            <span class="ident">String::from</span>(<span class="ident">Command::Voltage</span>(<span class="number">4.999</span>)),
-            <span class="string">&quot;VSET1:5.00&quot;</span>.<span class="ident">to_string</span>()
+            String::from(Command::Voltage(<span class="number">4.999</span>)),
+            <span class="string">&quot;VSET1:5.00&quot;</span>.to_string()
         );
         <span class="macro">assert_eq!</span>(
-            <span class="ident">String::from</span>(<span class="ident">Command::Voltage</span>(<span class="number">4.0</span>)),
-            <span class="string">&quot;VSET1:4.00&quot;</span>.<span class="ident">to_string</span>()
+            String::from(Command::Voltage(<span class="number">4.0</span>)),
+            <span class="string">&quot;VSET1:4.00&quot;</span>.to_string()
         );
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_output_iset</span>() {
-        <span class="comment">// PSU is picky on the number of decimal places.</span>
-        <span class="macro">assert_eq!</span>(
-            <span class="ident">String::from</span>(<span class="ident">Command::Current</span>(<span class="number">3.123</span>)),
-            <span class="string">&quot;ISET1:3.123&quot;</span>.<span class="ident">to_string</span>()
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_output_iset() {
+        <span class="comment">// PSU is picky on the number of decimal places.
+        </span><span class="macro">assert_eq!</span>(
+            String::from(Command::Current(<span class="number">3.123</span>)),
+            <span class="string">&quot;ISET1:3.123&quot;</span>.to_string()
         );
         <span class="macro">assert_eq!</span>(
-            <span class="ident">String::from</span>(<span class="ident">Command::Current</span>(<span class="number">1.500</span>)),
-            <span class="string">&quot;ISET1:1.500&quot;</span>.<span class="ident">to_string</span>()
+            String::from(Command::Current(<span class="number">1.500</span>)),
+            <span class="string">&quot;ISET1:1.500&quot;</span>.to_string()
         );
         <span class="macro">assert_eq!</span>(
-            <span class="ident">String::from</span>(<span class="ident">Command::Current</span>(<span class="number">4.99999</span>)),
-            <span class="string">&quot;ISET1:5.000&quot;</span>.<span class="ident">to_string</span>()
+            String::from(Command::Current(<span class="number">4.99999</span>)),
+            <span class="string">&quot;ISET1:5.000&quot;</span>.to_string()
         );
         <span class="macro">assert_eq!</span>(
-            <span class="ident">String::from</span>(<span class="ident">Command::Current</span>(<span class="number">4.0</span>)),
-            <span class="string">&quot;ISET1:4.000&quot;</span>.<span class="ident">to_string</span>()
+            String::from(Command::Current(<span class="number">4.0</span>)),
+            <span class="string">&quot;ISET1:4.000&quot;</span>.to_string()
         );
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="ka3005p" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="ka3005p" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
