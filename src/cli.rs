@@ -6,7 +6,7 @@ pub enum Command {
     /// Turns on or off the ouput of the power supply
     Power {
         /// on/off
-        #[clap(short, long)]
+        #[clap(help = "on/off")]
         switch: crate::Switch,
     },
     /// Return status inforation about the power spply
@@ -75,7 +75,6 @@ impl std::convert::TryInto<crate::Command> for Command {
 
 #[derive(Parser)]
 #[clap(author, version, about, long_about = None)]
-#[clap(propagate_version = true)]
 pub struct Ka3005p {
     #[clap(subcommand)]
     pub command: Command,
