@@ -1,0 +1,11 @@
+name: Continues Delivery
+
+name: PR-Merge
+
+on:
+  push:
+    tags:
+      - "**"
+
+env:
+  CARGO_TERM_COLOR: always
