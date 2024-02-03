@@ -1,7 +1,5 @@
 name: Continues Delivery
 
-name: PR-Merge
-
 on:
   push:
     tags:
