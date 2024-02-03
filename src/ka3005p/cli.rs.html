@@ -82,7 +82,6 @@
 <a href="#82" id="82">82</a>
 <a href="#83" id="83">83</a>
 <a href="#84" id="84">84</a>
-<a href="#85" id="85">85</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>clap::{Parser, Subcommand};
 <span class="kw">use </span>std::clone::Clone;
 
@@ -91,7 +90,7 @@
     <span class="doccomment">/// Turns on or off the ouput of the power supply
     </span>Power {
         <span class="doccomment">/// on/off
-        </span><span class="attr">#[clap(short, long)]
+        </span><span class="attr">#[clap(help = <span class="string">&quot;on/off&quot;</span>)]
         </span>switch: <span class="kw">crate</span>::Switch,
     },
     <span class="doccomment">/// Return status inforation about the power spply
@@ -160,7 +159,6 @@
 
 <span class="attr">#[derive(Parser)]
 #[clap(author, version, about, long_about = <span class="prelude-val">None</span>)]
-#[clap(propagate_version = <span class="bool-val">true</span>)]
 </span><span class="kw">pub struct </span>Ka3005p {
     <span class="attr">#[clap(subcommand)]
     </span><span class="kw">pub </span>command: Command,
