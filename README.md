@@ -7,7 +7,10 @@
 # KA3005P
 Command line tool to control power supplies created by Korad, Tenma, RS, Velleman, Stamos, (and other clones) via their serial interface.
 
-<img src='TenmaPSU.jpg' width='350'>
+<p align="center">
+    <img src='TenmaPSU.jpg' width="75%" height="75%">
+</p>
+
 
 ## Usage
 Example (Getting Help):
