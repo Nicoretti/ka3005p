@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Channel","Command","Lock","Mode","Switch"],"fn":["find_serial_port","list_serial_ports"],"struct":["Flags","Ka3005p","Status"]};
