@@ -1,4 +1,4 @@
 # Summary
 
-- [README](../../README.md)
+- [README](README.md)
 - [Development](development.md)
