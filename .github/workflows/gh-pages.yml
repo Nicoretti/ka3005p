@@ -1,0 +1,29 @@
+name: Publish Documentation
+
+on: 
+  workflow_call
+  workflow_dispatch
+
+jobs:
+
+  documentation-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SCM Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Development Environment
+        uses: ./.github/actions/ka3005p-dev
+
+      - name: Build Documentation
+        run: |
+          just docs-build
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        with:
+          branch: gh-pages
+          folder: ./doc/book
+          git-config-name: Github Action
+          git-config-email: nico.coretti@gmail.com
