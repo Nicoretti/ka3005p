@@ -1,0 +1,6 @@
+[book]
+authors = ["Nicola Coretti"]
+language = "en"
+multilingual = false
+src = "src"
+title = "KA3005p"
