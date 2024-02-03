@@ -1,0 +1,26 @@
+name: Continues Integration
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches-ignore:
+      - master
+      - main
+      - gh-pages
+
+env:
+  CARGO_TERM_COLOR: always
+
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Development Environment
+      uses: ./.github/actions/ka3005p-dev
+
+    - name: Run all tests
+      run: just test
