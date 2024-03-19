@@ -49,7 +49,7 @@ SUBCOMMANDS:
 > ka3005p status
 Voltage: 12.00, Current: 0.304, Channel1: CV, Channel2: CV, Lock: Off, Beep: On, Output: On
 
-> ka3005p power off
+> ka3005p power --switch off
 > ka3005p status
 Voltage: 12.00, Current: 0.305, Channel1: CV, Channel2: CV, Lock: Off, Beep: On, Output: Off
 
