@@ -1,0 +1,33 @@
+[build-system]
+requires = ["maturin>=1.5,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "ka3005p"
+requires-python = ">=3.8"
+description = "TBD"
+readme = "python/README.md"
+maintainers = [
+    { name = "Nicola Coretti", email ="nico.coretti@gmail.com" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+
+    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
+
+    "Topic :: System :: Hardware :: Universal Serial Bus (USB) :: Miscellaneous",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = ["pytest", "maturin_import_hook"]
+
+[tool.maturin]
+pythonj-source = "python"
+features = ["pyo3/extension-module", "python_module"]
+

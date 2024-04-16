@@ -2,6 +2,7 @@ target/
 .idea/
 .venv/
 .vscode/
+.env
 RND_320-KA3000-COMMANDS.pdf
 RND_320-KA3000-User-Manual.pdf
 
