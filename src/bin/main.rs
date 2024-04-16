@@ -1,10 +1,10 @@
 #![deny(warnings)]
 use anyhow::Context;
 use clap::Parser;
+use env_logger;
 use std::convert::TryInto;
 use std::io::BufRead;
 use std::process::exit;
-use env_logger;
 
 fn main() -> ::anyhow::Result<(), anyhow::Error> {
     human_panic::setup_panic!();

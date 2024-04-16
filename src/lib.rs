@@ -39,6 +39,8 @@ use std::time;
 #[doc(hidden)] // Users of the library shouldn't use this
 pub mod cli;
 pub use serialport;
+#[cfg(feature = "python_module")]
+pub mod py_module;
 
 /// On / Off
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
