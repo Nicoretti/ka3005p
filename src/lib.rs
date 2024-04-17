@@ -34,6 +34,7 @@ use std::fmt;
 use std::io;
 use std::str;
 use std::time;
+use log::debug;
 
 #[doc(hidden)] // Users of the library shouldn't use this
 pub mod cli;
@@ -326,6 +327,7 @@ impl Ka3005p {
 
     fn run_command(&mut self, command: &str) -> anyhow::Result<Vec<u8>> {
         let bytes = command.as_bytes();
+        debug!("Sending command: {}", command);
         if !self.serial.write(bytes)? == bytes.len() {
             return Err(anyhow::anyhow!("Could not write command"));
         }
@@ -346,6 +348,7 @@ impl Ka3005p {
                 }
             };
         }
+        debug!("Received response, raw: {:?}, as string: {}", result, String::from_utf8_lossy(&result));
         Ok(result)
     }
 }
