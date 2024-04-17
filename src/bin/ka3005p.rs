@@ -4,9 +4,11 @@ use clap::Parser;
 use std::convert::TryInto;
 use std::io::BufRead;
 use std::process::exit;
+use env_logger;
 
 fn main() -> ::anyhow::Result<(), anyhow::Error> {
     human_panic::setup_panic!();
+    env_logger::init();
     let args = ka3005p::cli::Ka3005p::parse();
 
     if let ka3005p::cli::Command::List { verbose } = args.command {
