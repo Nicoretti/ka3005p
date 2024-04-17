@@ -30,11 +30,11 @@
 #![deny(warnings)]
 #![warn(missing_docs)]
 use anyhow::Context;
+use log::debug;
 use std::fmt;
 use std::io;
 use std::str;
 use std::time;
-use log::debug;
 
 #[doc(hidden)] // Users of the library shouldn't use this
 pub mod cli;
@@ -305,11 +305,21 @@ impl Ka3005p {
     /// Retrieve status information from the power supply
     /// Returns a struct containing all the information about the power supply
     pub fn status(&mut self) -> anyhow::Result<Status> {
+        let printable_ascii = |bytes: Vec<u8>| -> String {
+            bytes
+                .into_iter()
+                .filter(|&b| b >= 32 && b <= 126)
+                .collect::<Vec<u8>>()
+                .into_iter()
+                .map(|b| b as char)
+                .collect()
+        };
+
         let flags: Flags = self.run_command_response("STATUS?")?[0].into();
-        let voltage = String::from_utf8_lossy(&self.run_command_response("VOUT1?")?).parse()?;
-        let current = String::from_utf8_lossy(&self.run_command_response("IOUT1?")?).parse()?;
-        let set_voltage = String::from_utf8_lossy(&self.run_command_response("VSET1?")?).parse()?;
-        let set_current = String::from_utf8_lossy(&self.run_command_response("ISET1?")?).parse()?;
+        let voltage = printable_ascii(self.run_command_response("VOUT1?")?).parse()?;
+        let current = printable_ascii(self.run_command_response("IOUT1?")?).parse()?;
+        let set_voltage = printable_ascii(self.run_command_response("VSET1?")?).parse()?;
+        let set_current = printable_ascii(self.run_command_response("ISET1?")?).parse()?;
         Ok(Status {
             flags,
             voltage,
@@ -348,7 +358,11 @@ impl Ka3005p {
                 }
             };
         }
-        debug!("Received response, raw: {:?}, as string: {}", result, String::from_utf8_lossy(&result));
+        debug!(
+            "Received response, raw: {:?}, as string: {})",
+            result,
+            String::from_utf8_lossy(&result)
+        );
         Ok(result)
     }
 }
