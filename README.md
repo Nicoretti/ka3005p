@@ -96,7 +96,7 @@ This can be used e.g. to apply an automated voltage ramp.
 > python3 ramp.py -f 10 -t 20 -p 10 | ka3005p interactive
 ```
 
-For more details check out the `ramp.py` script.
+For more details check out the `ramp.py` script in `scripts/ramp.py`.
 
 # License
 Licensed under either of
