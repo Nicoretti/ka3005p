@@ -5,7 +5,7 @@ build-backend = "maturin"
 [project]
 name = "ka3005p"
 requires-python = ">=3.8"
-description = "TBD"
+description = "Python interface to control Korad, Tenma, RS, Velleman, Stamos, and other compatible power supplies via their serial interface."
 readme = "python/README.md"
 maintainers = [
     { name = "Nicola Coretti", email ="nico.coretti@gmail.com" }
