@@ -69,6 +69,14 @@ jobs:
           command: test
           args: --target ${{ matrix.os }} --verbose
 
+    - name: "Publish to crates.io"
+      if: matrix.os == 'x86_64' && startsWith(github.ref, 'refs/tags/')
+      uses: actions-rs/cargo@v1
+      with:
+          command: publish
+          args: --token ${{ secrets.CRATES_IO }}
+
+
   clippy_check:
     runs-on: ubuntu-latest
     steps:
