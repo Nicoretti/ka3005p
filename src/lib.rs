@@ -310,7 +310,7 @@ impl Ka3005p {
         let printable_ascii = |bytes: Vec<u8>| -> String {
             bytes
                 .into_iter()
-                .filter(|&b| b >= 32 && b <= 126)
+                .filter(|&b| (32..=126).contains(&b))
                 .collect::<Vec<u8>>()
                 .into_iter()
                 .map(|b| b as char)
