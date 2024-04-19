@@ -53,7 +53,7 @@ impl PowerSupply {
         Ok(self
             .inner
             .execute(command)
-            .map_err(|e| Into::<Ka3005pError>::into(e))?)
+            .map_err(Into::<Ka3005pError>::into)?)
     }
 
     /// Get the status of the power supply.
@@ -61,10 +61,7 @@ impl PowerSupply {
     /// Returns:
     ///     Status of the power supply.
     fn _status(&mut self) -> PyResult<Status> {
-        Ok(self
-            .inner
-            .status()
-            .map_err(|e| Into::<Ka3005pError>::into(e))?)
+        Ok(self.inner.status().map_err(Into::<Ka3005pError>::into)?)
     }
 }
 
@@ -81,10 +78,10 @@ impl PowerSupply {
     fn new(serial_port: Option<&str>) -> PyResult<Self> {
         let supply = match serial_port {
             Some(port) => PowerSupply {
-                inner: Ka3005p::new(port).map_err(|e| Into::<Ka3005pError>::into(e))?,
+                inner: Ka3005p::new(port).map_err(Into::<Ka3005pError>::into)?,
             },
             None => PowerSupply {
-                inner: find_serial_port().map_err(|e| Into::<Ka3005pError>::into(e))?,
+                inner: find_serial_port().map_err(Into::<Ka3005pError>::into)?,
             },
         };
         Ok(supply)
@@ -113,7 +110,7 @@ impl PowerSupply {
         Ok(self
             .inner
             .run_command(command)
-            .map_err(|e| Into::<Ka3005pError>::into(e))?)
+            .map_err(Into::<Ka3005pError>::into)?)
     }
 
     /// Get the output current setting of the power supply.
