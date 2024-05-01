@@ -20,7 +20,7 @@ categories = ["command-line-utilities"]
 
 [dependencies]
 serialport = "4.*"
-human-panic = "1.*"
+human-panic = "2.*"
 anyhow = "1.*"
 clap = { version = "4.*", features = ["derive"] }
 log = "0.4.21"
