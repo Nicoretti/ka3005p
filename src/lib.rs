@@ -307,21 +307,11 @@ impl Ka3005p {
     /// Retrieve status information from the power supply
     /// Returns a struct containing all the information about the power supply
     pub fn status(&mut self) -> anyhow::Result<Status> {
-        let printable_ascii = |bytes: Vec<u8>| -> String {
-            bytes
-                .into_iter()
-                .filter(|&b| (32..=126).contains(&b))
-                .collect::<Vec<u8>>()
-                .into_iter()
-                .map(|b| b as char)
-                .collect()
-        };
-
         let flags: Flags = self.run_command_response("STATUS?")?[0].into();
-        let voltage = printable_ascii(self.run_command_response("VOUT1?")?).parse()?;
-        let current = printable_ascii(self.run_command_response("IOUT1?")?).parse()?;
-        let set_voltage = printable_ascii(self.run_command_response("VSET1?")?).parse()?;
-        let set_current = printable_ascii(self.run_command_response("ISET1?")?).parse()?;
+        let voltage = Self::printable_ascii(self.run_command_response("VOUT1?")?).parse()?;
+        let current = Self::printable_ascii(self.run_command_response("IOUT1?")?).parse()?;
+        let set_voltage = Self::printable_ascii(self.run_command_response("VSET1?")?).parse()?;
+        let set_current = Self::printable_ascii(self.run_command_response("ISET1?")?).parse()?;
         Ok(Status {
             flags,
             voltage,
@@ -329,6 +319,47 @@ impl Ka3005p {
             set_voltage,
             set_current,
         })
+    }
+
+    /// Read the output enable status from the power supply
+    pub fn read_output_enable(&mut self) -> anyhow::Result<bool> {
+        let status = self.status()?;
+        Ok(status.flags.output.into())
+    }
+
+    /// Read the set voltage from the power supply
+    pub fn read_set_voltage(&mut self) -> anyhow::Result<f32> {
+        let set_voltage = Self::printable_ascii(self.run_command_response("VSET1?")?).parse()?;
+        Ok(set_voltage)
+    }
+
+    /// Read the set current from the power supply
+    pub fn read_set_current(&mut self) -> anyhow::Result<f32> {
+        let set_current = Self::printable_ascii(self.run_command_response("ISET1?")?).parse()?;
+        Ok(set_current)
+    }
+
+    /// Read the measured voltage from the power supply
+    pub fn read_measured_voltage(&mut self) -> anyhow::Result<f32> {
+        let voltage = Self::printable_ascii(self.run_command_response("VOUT1?")?).parse()?;
+        Ok(voltage)
+    }
+
+    /// Read the measured current from the power supply
+    pub fn read_measured_current(&mut self) -> anyhow::Result<f32> {
+        let current = Self::printable_ascii(self.run_command_response("IOUT1?")?).parse()?;
+        Ok(current)
+    }
+
+    /// Helper function to extract printable ASCII characters from byte vector
+    fn printable_ascii(bytes: Vec<u8>) -> String {
+        bytes
+            .into_iter()
+            .filter(|&b| (32..=126).contains(&b))
+            .collect::<Vec<u8>>()
+            .into_iter()
+            .map(|b| b as char)
+            .collect()
     }
 
     fn run_command_response(&mut self, command: &str) -> anyhow::Result<Vec<u8>> {
