@@ -85,6 +85,7 @@ sudo apt install libudev-dev
 ## Known working power supplies
 If this tool works for you please add your device to this list:
 * Korad KA3005P
+* Korad KD3005P
 * Tenma 72-2540
 * RS PRO RS6005p
 
