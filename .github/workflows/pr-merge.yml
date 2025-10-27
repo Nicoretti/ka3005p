@@ -15,5 +15,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Execut PR Merge Workflow
-      run: echo "This currently is a empyt stub"
+    - name: Execute PR Merge Workflow
+      run: echo "This currently is a empty stub"
