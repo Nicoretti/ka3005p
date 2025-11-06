@@ -74,7 +74,15 @@ impl std::convert::TryInto<crate::Command> for Command {
 }
 
 #[derive(Parser)]
-#[clap(author, version, about, long_about = None)]
+#[command(author, version, about, long_about = None)]
+#[command(propagate_version = true)]
+#[command(color = clap::ColorChoice::Auto)]
+#[command(styles = clap::builder::styling::Styles::styled()
+    .header(clap::builder::styling::AnsiColor::Yellow.on_default())
+    .usage(clap::builder::styling::AnsiColor::Blue.on_default())
+    .literal(clap::builder::styling::AnsiColor::BrightBlue.on_default())
+    .placeholder(clap::builder::styling::AnsiColor::Cyan.on_default())
+    )]
 pub struct Ka3005p {
     #[clap(subcommand)]
     pub command: Command,
